@@ -1,0 +1,13 @@
+namespaces:
+- author:
+  - Alessandra Trapani
+  contact:
+  - alessandramaria.trapani@gmail.com
+  doc: My NWB extension
+  name: ndx-holographic-stimulation
+  schema:
+  - namespace: core
+    neurodata_types:
+    - ElectricalSeries
+  - source: ndx-holographic-stimulation.extensions.yaml
+  version: 0.1.0
