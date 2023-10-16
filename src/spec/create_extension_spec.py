@@ -3,7 +3,7 @@ import os.path
 
 from pynwb.spec import NWBNamespaceBuilder, export_spec, NWBGroupSpec, NWBAttributeSpec
 # TODO: import other spec classes as needed
-# from pynwb.spec import NWBDatasetSpec, NWBLinkSpec, NWBDtypeSpec, NWBRefSpec
+from pynwb.spec import NWBDatasetSpec, NWBLinkSpec, NWBDtypeSpec, NWBRefSpec
 
 
 def main():
@@ -22,27 +22,36 @@ def main():
     # to use your new data types.
     # all types included or used by the types specified here will also be
     # included.
-    ns_builder.include_type('ElectricalSeries', namespace='core')
+    ns_builder.include_type('OptogeneticSeries', namespace='core')
 
     # TODO: define your new data types
     # see https://pynwb.readthedocs.io/en/latest/extensions.html#extending-nwb
     # for more information
-    tetrode_series = NWBGroupSpec(
-        neurodata_type_def='TetrodeSeries',
-        neurodata_type_inc='ElectricalSeries',
-        doc=('An extension of ElectricalSeries to include the tetrode ID for '
-             'each time series.'),
-        attributes=[
-            NWBAttributeSpec(
-                name='trode_id',
-                doc='The tetrode ID.',
-                dtype='int32'
+    holographic_series = NWBGroupSpec(
+        neurodata_type_def='HolographicSeries',
+        neurodata_type_inc='OptogeneticSeries',
+        doc=('An extension of OptogeneticSeries to include the geometrical representation for '
+             'the stimulus.'),
+        datasets=[
+            NWBDatasetSpec(
+                name='data',
+                doc='The data values. May be 1D or 2D. The first dimension must be time. The optional second dimension represents ROIs',
+                shape=(None,None),
             )
         ],
+        groups=[
+            NWBGroupSpec(
+                name="rois",
+                neurodata_type_inc="DynamicTableRegion",
+                doc="a table region corresponding to the ROIs that were stimulated following data",
+            )
+        ]
+    # TODO: add attributes
+
     )
 
     # TODO: add all of your new data types to this list
-    new_data_types = [tetrode_series]
+    new_data_types = [holographic_series]
 
     # export the spec to yaml files in the spec folder
     output_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'spec'))
