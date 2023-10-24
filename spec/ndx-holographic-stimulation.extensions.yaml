@@ -1,8 +1,50 @@
 groups:
-- neurodata_type_def: TetrodeSeries
-  neurodata_type_inc: ElectricalSeries
-  doc: An extension of ElectricalSeries to include the tetrode ID for each time series.
+- neurodata_type_def: HolographicStimulusPattern
+  neurodata_type_inc: DynamicTable
+  doc: Excitation pattern of a single ROI.
+- neurodata_type_def: HolographicStimulationTarget
+  neurodata_type_inc: ImagingPlane
+  doc: An extension of ImagingPlane to include the metadata for the holographic stimulation.
   attributes:
-  - name: trode_id
-    dtype: int32
-    doc: The tetrode ID.
+  - name: effector
+    dtype: text
+    doc: the opsin (membrane channel) used to write neural activity
+    required: false
+- neurodata_type_def: HolographicStimulusSite
+  neurodata_type_inc: OptogeneticStimulusSite
+  doc: An extension of OptogeneticStimulusSite to include the geometrical representation
+    for the stimulus.
+  links:
+  - target_type: HolographicStimulusPattern
+    doc: link to the holographic stimulus pattern
+    quantity: '?'
+  - target_type: HolographicStimulationTarget
+    doc: link to the holographic target
+    quantity: '?'
+- neurodata_type_def: HolographicSeries
+  neurodata_type_inc: OptogeneticSeries
+  doc: An extension of OptogeneticSeries to include the holographic representation
+    for the stimulus.
+  attributes:
+  - name: unit
+    dtype: text
+    doc: The base unit of measurement (should be SI unit - default W)
+    required: false
+  datasets:
+  - name: data
+    dtype: float
+    shape:
+    - null
+    - null
+    doc: The data values. May be 1D or 2D. The first dimension must be time. The optional
+      second dimension represents ROIs
+    quantity: '?'
+  links:
+  - name: rois
+    target_type: DynamicTableRegion
+    doc: link to the stimulated rois
+    quantity: '?'
+  - name: site
+    target_type: HolographicStimulusSite
+    doc: link to the holographic stimulus site
+    quantity: '?'

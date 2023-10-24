@@ -8,6 +8,12 @@ namespaces:
   schema:
   - namespace: core
     neurodata_types:
-    - ElectricalSeries
+    - OptogeneticSeries
+    - ImagingPlane
+    - OptogeneticStimulusSite
+  - namespace: hdmf-common
+    neurodata_types:
+    - DynamicTable
+    - DynamicTableRegion
   - source: ndx-holographic-stimulation.extensions.yaml
   version: 0.1.0
