@@ -19,17 +19,24 @@ def main():
         ),
     )
     ns_builder.include_type("DynamicTable", namespace="hdmf-common")
+    ns_builder.include_type("NWBContainer", namespace="core")
     ns_builder.include_type("OptogeneticSeries", namespace="core")
     ns_builder.include_type("OptogeneticStimulusSite", namespace="core")
     ns_builder.include_type("DynamicTableRegion", namespace="hdmf-common")
 
     HolographicStimulusPattern = NWBGroupSpec(
         neurodata_type_def="HolographicStimulusPattern",
-        neurodata_type_inc="DynamicTable",
+        neurodata_type_inc="NWBContainer",
         doc=("Excitation pattern of a single ROI."),
-        # TODO add atributes that describe the stimulus pattern e.g. for spiral scanning we will need to define
+        # TODO add the appropriate data that describe the stimulus pattern e.g. for spiral scanning we will need to define
         # spiral_duration/repetition_frequency/revolution while for temporal focusing we will need to define
         # Optical lateral PSF/Optical axial PSF related paramenters
+    )
+    HolographicStimulusPattern.add_attribute(
+        name="description",
+        doc="Human-readable description of the stimulation pattern",
+        dtype="text",
+        required=False,
     )
 
     HolographicStimulusSite = NWBGroupSpec(

@@ -1,7 +1,12 @@
 groups:
 - neurodata_type_def: HolographicStimulusPattern
-  neurodata_type_inc: DynamicTable
+  neurodata_type_inc: NWBContainer
   doc: Excitation pattern of a single ROI.
+  attributes:
+  - name: description
+    dtype: text
+    doc: Human-readable description of the stimulation pattern
+    required: false
 - neurodata_type_def: HolographicStimulusSite
   neurodata_type_inc: OptogeneticStimulusSite
   doc: An extension of OptogeneticStimulusSite to include the geometrical representation
