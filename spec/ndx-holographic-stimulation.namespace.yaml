@@ -9,7 +9,6 @@ namespaces:
   - namespace: core
     neurodata_types:
     - OptogeneticSeries
-    - ImagingPlane
     - OptogeneticStimulusSite
   - namespace: hdmf-common
     neurodata_types:

@@ -2,18 +2,15 @@ groups:
 - neurodata_type_def: HolographicStimulusPattern
   neurodata_type_inc: DynamicTable
   doc: Excitation pattern of a single ROI.
-- neurodata_type_def: HolographicStimulationTarget
-  neurodata_type_inc: ImagingPlane
-  doc: An extension of ImagingPlane to include the metadata for the holographic stimulation.
-  attributes:
-  - name: effector
-    dtype: text
-    doc: the opsin (membrane channel) used to write neural activity
-    required: false
 - neurodata_type_def: HolographicStimulusSite
   neurodata_type_inc: OptogeneticStimulusSite
   doc: An extension of OptogeneticStimulusSite to include the geometrical representation
     for the stimulus.
+  attributes:
+  - name: effector
+    dtype: text
+    doc: Light-activated effector protein expressed by the targeted cell (eg. ChR2)
+    required: false
   links:
   - target_type: HolographicStimulusPattern
     doc: link to the holographic stimulus pattern
@@ -25,11 +22,6 @@ groups:
   neurodata_type_inc: OptogeneticSeries
   doc: An extension of OptogeneticSeries to include the holographic representation
     for the stimulus.
-  attributes:
-  - name: unit
-    dtype: text
-    doc: The base unit of measurement (should be SI unit - default W)
-    required: false
   datasets:
   - name: data
     dtype: float
