@@ -33,7 +33,7 @@ class HolographicSeries(OptogeneticSeries):
         {
             "name": "data",
             "type": ("array_data", "data", TimeSeries),
-            "shape": ((None, 1), (None, 2)),  # required
+            "shape": (None, None),  # required
             "doc": (
                 "The data values in W. May be 1D or 2D. The first dimension must be time. The optional second dimension represents ROIs"
             ),
@@ -65,8 +65,10 @@ class HolographicSeries(OptogeneticSeries):
     )
     def __init__(self, **kwargs):
         """Construct a new HolographicSeries representing holographic stimulus"""
-        site, rois = popargs("site", "rois", kwargs)
+        data, data, site, rois = popargs("site", "rois", kwargs)
         call_docval_func(super().__init__, kwargs)
+        self.name = name
+        self.data = data
         self.site = site
         self.rois = rois
 
@@ -119,15 +121,13 @@ class HolographicStimulusPattern(NWBContainer):
     The beam pattern on single cells, e.g. "spiral" or "temporal focusing"
     """
 
-    __nwbfields__ = ("description")
+    __nwbfields__ = "description"
 
     @docval(
         {
             "name": "description",
             "type": str,
-            "doc": (
-                "Human-readable description of the stimulation pattern"
-            ),
+            "doc": ("Human-readable description of the stimulation pattern"),
             "default": None,
         },
         *get_docval(
