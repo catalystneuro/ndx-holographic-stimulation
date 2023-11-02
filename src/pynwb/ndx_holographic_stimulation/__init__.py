@@ -23,4 +23,6 @@ load_namespaces(ndx_holographic_stimulation_specpath)
 
 # TODO: import your classes here or define your class using get_class to make
 # them accessible at the package level
-TetrodeSeries = get_class('TetrodeSeries', 'ndx-holographic-stimulation')
+HolographicSeries = get_class('HolographicSeries', 'ndx-holographic-stimulation')
+HolographicStimulusPattern = get_class('HolographicStimulusPattern', 'ndx-holographic-stimulation')
+HolographicStimulusSite = get_class('HolographicStimulusSite', 'ndx-holographic-stimulation')
