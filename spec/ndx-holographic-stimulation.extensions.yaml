@@ -17,11 +17,9 @@ groups:
     doc: Light-activated effector protein expressed by the targeted cell (eg. ChR2)
     required: false
   links:
-  - target_type: HolographicStimulusPattern
+  - name: stimulus_pattern
+    target_type: HolographicStimulusPattern
     doc: link to the holographic stimulus pattern
-    quantity: '?'
-  - target_type: HolographicStimulationTarget
-    doc: link to the holographic target
     quantity: '?'
 - neurodata_type_def: HolographicSeries
   neurodata_type_inc: OptogeneticSeries

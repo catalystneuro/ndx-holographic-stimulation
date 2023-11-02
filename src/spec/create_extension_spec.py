@@ -54,13 +54,9 @@ def main():
         required=False,
     )
     HolographicStimulusSite.add_link(
+        name="stimulus_pattern",
         doc="link to the holographic stimulus pattern",
         target_type="HolographicStimulusPattern",
-        quantity="?",
-    )
-    HolographicStimulusSite.add_link(
-        doc="link to the holographic target",
-        target_type="HolographicStimulationTarget",
         quantity="?",
     )
 
