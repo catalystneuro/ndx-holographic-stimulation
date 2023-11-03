@@ -18,25 +18,19 @@ def main():
             map(str.strip, """alessandramaria.trapani@gmail.com""".split(","))
         ),
     )
-    ns_builder.include_type("DynamicTable", namespace="hdmf-common")
-    ns_builder.include_type("NWBContainer", namespace="core")
+
     ns_builder.include_type("TimeSeries", namespace="core")
     ns_builder.include_type("OptogeneticStimulusSite", namespace="core")
+    ns_builder.include_type("DynamicTable", namespace="hdmf-common")
     ns_builder.include_type("DynamicTableRegion", namespace="hdmf-common")
 
     HolographicStimulusPattern = NWBGroupSpec(
         neurodata_type_def="HolographicStimulusPattern",
-        neurodata_type_inc="NWBContainer",
+        neurodata_type_inc="DynamicTable",
         doc=("Excitation pattern of a single ROI."),
         # TODO add the appropriate data that describe the stimulus pattern e.g. for spiral scanning we will need to define
         # spiral_duration/repetition_frequency/revolution while for temporal focusing we will need to define
         # Optical lateral PSF/Optical axial PSF related paramenters
-    )
-    HolographicStimulusPattern.add_attribute(
-        name="description",
-        doc="Human-readable description of the stimulation pattern",
-        dtype="text",
-        required=False,
     )
 
     HolographicStimulusSite = NWBGroupSpec(
@@ -72,7 +66,7 @@ def main():
                 name="unit",
                 doc="SI unit of data",
                 dtype="text",
-                default_value="watts",
+                default_value="W",
             )
         ],
         datasets=[
@@ -81,13 +75,9 @@ def main():
                 doc=(
                     "The data values. May be 1D or 2D. The first dimension must be time. The optional second dimension represents ROIs"
                 ),
-                dtype="float",
-                shape=[
-                    [
-                        None,
-                    ],
-                    [None, None],
-                ],
+                dtype="numeric",
+                shape=(None, None),
+                dims=("num_times", "num_rois"),
             ),
             NWBDatasetSpec(
                 name="rois",

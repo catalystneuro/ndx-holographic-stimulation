@@ -1,12 +1,7 @@
 groups:
 - neurodata_type_def: HolographicStimulusPattern
-  neurodata_type_inc: NWBContainer
+  neurodata_type_inc: DynamicTable
   doc: Excitation pattern of a single ROI.
-  attributes:
-  - name: description
-    dtype: text
-    doc: Human-readable description of the stimulation pattern
-    required: false
 - neurodata_type_def: HolographicStimulusSite
   neurodata_type_inc: OptogeneticStimulusSite
   doc: An extension of OptogeneticStimulusSite to include the geometrical representation
@@ -28,16 +23,18 @@ groups:
   attributes:
   - name: unit
     dtype: text
-    default_value: watts
+    default_value: W
     doc: SI unit of data
     required: false
   datasets:
   - name: data
-    dtype: float
+    dtype: numeric
+    dims:
+    - num_times
+    - num_rois
     shape:
-    - - null
-    - - null
-      - null
+    - null
+    - null
     doc: The data values. May be 1D or 2D. The first dimension must be time. The optional
       second dimension represents ROIs
   - name: rois

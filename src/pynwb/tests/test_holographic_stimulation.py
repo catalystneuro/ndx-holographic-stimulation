@@ -26,7 +26,6 @@ class TestHolographicSeries(TestCase):
     @classmethod
     def setUpClass(cls):
         cls.session_start_time = datetime.now().astimezone()
-        cls.site_name = "HolographicStimulusSite"  # TODO REMOVE
         cls.test_dir = Path(mkdtemp())
 
     def setUp(self) -> None:
@@ -46,7 +45,19 @@ class TestHolographicSeries(TestCase):
         self.roi_table_region = self.plane_segmentation.create_roi_table_region(
             region=[0, 1], description="the first of two ROIs"
         )
-        # metadata for holographic series #TODO add the others
+        # metadata for holographic series
+        self.series_name = "HolographicSeries"
+        self.series_description = "Holographic stimulus on 2 rois"
+        self.unit = "W"
+        # metadata for holographic stimulus site
+        self.site_name = "HolographicStimulusSite"
+        self.site_description = "This is an example holographic site."
+        self.excitation_lambda = 600.0
+        self.effector = "ChR2"
+        self.location = "VISrl"
+        # metadata for holographic stimulus pattern
+        self.pattern_name = "HolographicStimulusPattern"
+        self.pattern_description = "spiral, 5 revolutions, 5 repetitions"
 
     @classmethod
     def tearDownClass(cls):
@@ -59,18 +70,17 @@ class TestHolographicSeries(TestCase):
 
     def test_holographic_series_constructor(self):
         stimulus_pattern = HolographicStimulusPattern(
-            name="stimulus_pattern",
-            description="spiral, 5 revolutions, 5 repetitions",  # TODO: fix the name definition
+            name=self.pattern_name,
+            description=self.pattern_description,  # TODO: fix the name definition
         )
-        
-        
+        self.nwbfile.add_acquisition(stimulus_pattern) #TODO extend stimulus pattern a timeseries and add to stimulus module or a labmetadata and add to general 
         holo_stim_site = HolographicStimulusSite(
             name=self.site_name,
             device=self.device,
-            description="This is an example holographic site.",
-            excitation_lambda=600.0,  # nm
-            effector="ChR2",
-            location="VISrl",
+            description=self.site_description,
+            excitation_lambda=self.excitation_lambda,  # nm
+            effector=self.effector,
+            location=self.location,
             stimulus_pattern=stimulus_pattern,
         )
         self.nwbfile.add_ogen_site(holo_stim_site)
@@ -79,34 +89,35 @@ class TestHolographicSeries(TestCase):
         timestamps = np.linspace(0, 10, num=100)  # a timestamp for every frame
 
         holographic_stimulation = HolographicSeries(
-            name="holographic_stimulation",
-            description="Holographic stimulus on 2 rois",
+            name=self.series_name,
+            description=self.series_description,
             data=data,
-            unit="W",
+            unit=self.unit,
             rois=self.roi_table_region,
             site=holo_stim_site,
             timestamps=timestamps,
         )
+        assert_array_equal(holographic_stimulation.data, data)
 
         self.nwbfile.add_stimulus(holographic_stimulation)
 
-        self.assertIn(holographic_stimulation, self.nwbfile.stimulus)
-        assert_array_equal(self.nwbfile.stimulus["holographic_stimulation"].data, data)
+        assert holographic_stimulation.name in self.nwbfile.stimulus.keys()
+        assert holographic_stimulation in self.nwbfile.stimulus.values()
 
     def test_holographic_series_roundtrip(self):
         stimulus_pattern = HolographicStimulusPattern(
-            name="stimulus_pattern",
-            description="spiral, 5 revolutions, 5 repetitions",  # TODO: fix the name definition
+            name=self.pattern_name,
+            description=self.pattern_description,  # TODO: fix the name definition
         )
-
+        self.nwbfile.add_acquisition(stimulus_pattern)
 
         holo_stim_site = HolographicStimulusSite(
             name=self.site_name,
             device=self.device,
-            description="This is an example holographic site.",
-            excitation_lambda=600.0,  # nm
-            effector="ChR2",
-            location="VISrl",
+            description=self.site_description,
+            excitation_lambda=self.excitation_lambda,  # nm
+            effector=self.effector,
+            location=self.location,
             stimulus_pattern=stimulus_pattern,
         )
         self.nwbfile.add_ogen_site(holo_stim_site)
@@ -115,10 +126,10 @@ class TestHolographicSeries(TestCase):
         timestamps = np.linspace(0, 10, num=100)  # a timestamp for every frame
 
         holographic_stimulation = HolographicSeries(
-            name="holographic_stimulation",
-            description="Holographic stimulus on 2 rois",
+            name=self.series_name,
+            description=self.series_description,
             data=data,
-            unit="W",
+            unit=self.unit,
             rois=self.roi_table_region,
             site=holo_stim_site,
             timestamps=timestamps,
@@ -132,6 +143,7 @@ class TestHolographicSeries(TestCase):
 
         with NWBHDF5IO(nwbfile_path, mode="r") as io:
             nwbfile_in = io.read()
+            assert self.series_name in nwbfile_in.stimulus.keys()
             # device_metadata = deepcopy(self.miniscope_mscam_metadata)
             # device_name = device_metadata.pop("name")
             # self.assertIn(device_name, nwbfile_in.devices)

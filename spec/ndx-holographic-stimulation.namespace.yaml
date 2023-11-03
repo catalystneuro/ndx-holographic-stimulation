@@ -8,7 +8,6 @@ namespaces:
   schema:
   - namespace: core
     neurodata_types:
-    - NWBContainer
     - TimeSeries
     - OptogeneticStimulusSite
   - namespace: hdmf-common
