@@ -70,7 +70,7 @@ def test_example_usage():
         description="Microsope used for holography",
     )
     stimulus_pattern = HolographicStimulusPattern(
-        name="spiral", description="5 revolutions, 5 repetitions"
+        name="stimulus_pattern", description="spiral, 5 revolutions, 5 repetitions" # TODO: fix the name definition
     )
     holo_stim_site = HolographicStimulusSite(
         name="HolographicStimulusSite",

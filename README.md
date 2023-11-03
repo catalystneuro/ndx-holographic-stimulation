@@ -87,8 +87,8 @@ device_stimulating = nwbfile.create_device(
 Define the stimulus pattern: TO BE UPDATED
 ```python
 stimulus_pattern = HolographicStimulusPattern(
-    name="spiral", 
-    description="5 revolutions, 5 repetitions",
+    name="stimulus_pattern", 
+    description="spiral, 5 revolutions, 5 repetitions",
 )
 ```
 Define the stimulus site: specify the effector and the stimulus pattern used

@@ -27,13 +27,13 @@ groups:
     for the stimulus.
   datasets:
   - name: data
+    neurodata_type_inc: VectorData
     dtype: float
     shape:
     - null
     - null
     doc: The data values. May be 1D or 2D. The first dimension must be time. The optional
       second dimension represents ROIs
-    quantity: '?'
   links:
   - name: rois
     target_type: DynamicTableRegion

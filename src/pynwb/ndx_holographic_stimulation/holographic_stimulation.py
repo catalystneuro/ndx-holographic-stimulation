@@ -65,7 +65,7 @@ class HolographicSeries(OptogeneticSeries):
     )
     def __init__(self, **kwargs):
         """Construct a new HolographicSeries representing holographic stimulus"""
-        data, data, site, rois = popargs("site", "rois", kwargs)
+        data, name, site, rois = popargs("site", "rois", kwargs)
         call_docval_func(super().__init__, kwargs)
         self.name = name
         self.data = data
