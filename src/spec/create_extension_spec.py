@@ -20,7 +20,7 @@ def main():
     )
     ns_builder.include_type("DynamicTable", namespace="hdmf-common")
     ns_builder.include_type("NWBContainer", namespace="core")
-    ns_builder.include_type("OptogeneticSeries", namespace="core")
+    ns_builder.include_type("TimeSeries", namespace="core")
     ns_builder.include_type("OptogeneticStimulusSite", namespace="core")
     ns_builder.include_type("DynamicTableRegion", namespace="hdmf-common")
 
@@ -62,32 +62,49 @@ def main():
 
     HolographicSeries = NWBGroupSpec(
         neurodata_type_def="HolographicSeries",
-        neurodata_type_inc="OptogeneticSeries",
+        neurodata_type_inc="TimeSeries",
         doc=(
             "An extension of OptogeneticSeries to include the holographic representation for "
             "the stimulus."
         ),
+        attributes=[
+            NWBAttributeSpec(
+                name="unit",
+                doc="SI unit of data",
+                dtype="text",
+                default_value="watts",
+            )
+        ],
+        datasets=[
+            NWBDatasetSpec(
+                name="data",
+                doc=(
+                    "The data values. May be 1D or 2D. The first dimension must be time. The optional second dimension represents ROIs"
+                ),
+                dtype="float",
+                shape=[
+                    [
+                        None,
+                    ],
+                    [None, None],
+                ],
+            ),
+            NWBDatasetSpec(
+                name="rois",
+                doc="references rows of ROI table",
+                dtype="int",
+                neurodata_type_inc="DynamicTableRegion",
+            ),
+        ],
+        links=[
+            NWBLinkSpec(
+                name="site",
+                doc="link to the holographic stimulus site",
+                target_type="HolographicStimulusSite",
+                quantity="*",
+            ),
+        ],
     )
-    HolographicSeries.add_dataset(
-        name='data',
-        doc="The data values. May be 1D or 2D. The first dimension must be time. The optional second dimension represents ROIs",
-        shape=(None, None),
-        dtype="float",
-        quantity="?",
-    )
-    HolographicSeries.add_link(
-        name='rois',
-        doc="link to the stimulated rois",
-        target_type="DynamicTableRegion",
-        quantity="?",
-    )
-    HolographicSeries.add_link(
-        name='site',
-        doc="link to the holographic stimulus site",
-        target_type="HolographicStimulusSite",
-        quantity="?",
-    )
-
 
     # TODO: add all of your new data types to this list
     new_data_types = [

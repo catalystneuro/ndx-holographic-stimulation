@@ -22,24 +22,30 @@ groups:
     doc: link to the holographic stimulus pattern
     quantity: '?'
 - neurodata_type_def: HolographicSeries
-  neurodata_type_inc: OptogeneticSeries
+  neurodata_type_inc: TimeSeries
   doc: An extension of OptogeneticSeries to include the holographic representation
     for the stimulus.
+  attributes:
+  - name: unit
+    dtype: text
+    default_value: watts
+    doc: SI unit of data
+    required: false
   datasets:
   - name: data
-    neurodata_type_inc: VectorData
     dtype: float
     shape:
-    - null
-    - null
+    - - null
+    - - null
+      - null
     doc: The data values. May be 1D or 2D. The first dimension must be time. The optional
       second dimension represents ROIs
-  links:
   - name: rois
-    target_type: DynamicTableRegion
-    doc: link to the stimulated rois
-    quantity: '?'
+    neurodata_type_inc: DynamicTableRegion
+    dtype: int
+    doc: references rows of ROI table
+  links:
   - name: site
     target_type: HolographicStimulusSite
     doc: link to the holographic stimulus site
-    quantity: '?'
+    quantity: '*'
