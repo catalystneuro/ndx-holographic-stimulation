@@ -60,7 +60,7 @@ plane_seg = img_seg.create_plane_segmentation(
     description="output from segmenting my favorite imaging plane",
     imaging_plane=imaging_plane,
 )
-for _ in range(30):
+for _ in range(2):
     image_mask = np.zeros((100, 100))
 
     # randomly generate example image masks
@@ -106,7 +106,7 @@ nwbfile.add_ogen_site(holo_stim_site)
 ```
 Define the stimulus sequence on the ROIs previously defined in the imaging frame coordinates
 ```python
-data = np.random.rand(100, 12)  # ntime x nroi
+data = np.random.rand(100, 2)  # ntime x nroi
 timestamps = np.linspace(0, 10, num=100)  # a timestamp for every frame
 
 holographic_stimulation = HolographicSeries(
