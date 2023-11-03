@@ -1,6 +1,7 @@
 groups:
 - neurodata_type_def: HolographicStimulusPattern
-  neurodata_type_inc: DynamicTable
+  neurodata_type_inc: LabMetaData
+  name: HolographicStimulusPattern
   doc: Excitation pattern of a single ROI.
 - neurodata_type_def: HolographicStimulusSite
   neurodata_type_inc: OptogeneticStimulusSite

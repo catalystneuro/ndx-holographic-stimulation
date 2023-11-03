@@ -69,11 +69,8 @@ class TestHolographicSeries(TestCase):
             )
 
     def test_holographic_series_constructor(self):
-        stimulus_pattern = HolographicStimulusPattern(
-            name=self.pattern_name,
-            description=self.pattern_description,  # TODO: fix the name definition
-        )
-        self.nwbfile.add_acquisition(stimulus_pattern) #TODO extend stimulus pattern a timeseries and add to stimulus module or a labmetadata and add to general 
+        stimulus_pattern = HolographicStimulusPattern()
+        self.nwbfile.add_lab_meta_data(stimulus_pattern) #TODO extend stimulus pattern a timeseries and add to stimulus module or a labmetadata and add to general 
         holo_stim_site = HolographicStimulusSite(
             name=self.site_name,
             device=self.device,
@@ -105,11 +102,8 @@ class TestHolographicSeries(TestCase):
         assert holographic_stimulation in self.nwbfile.stimulus.values()
 
     def test_holographic_series_roundtrip(self):
-        stimulus_pattern = HolographicStimulusPattern(
-            name=self.pattern_name,
-            description=self.pattern_description,  # TODO: fix the name definition
-        )
-        self.nwbfile.add_acquisition(stimulus_pattern)
+        stimulus_pattern = HolographicStimulusPattern()
+        self.nwbfile.add_lab_meta_data(stimulus_pattern) #TODO extend stimulus pattern a timeseries and add to stimulus module or a labmetadata and add to general 
 
         holo_stim_site = HolographicStimulusSite(
             name=self.site_name,
