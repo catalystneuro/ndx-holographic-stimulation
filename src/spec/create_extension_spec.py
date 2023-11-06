@@ -22,16 +22,109 @@ def main():
     ns_builder.include_type("TimeSeries", namespace="core")
     ns_builder.include_type("OptogeneticStimulusSite", namespace="core")
     ns_builder.include_type("DynamicTableRegion", namespace="hdmf-common")
+    ns_builder.include_type("DynamicTable", namespace="hdmf-common")
     ns_builder.include_type("LabMetaData", namespace="core")
+
+    SpiralScanning = NWBGroupSpec(
+        neurodata_type_def="SpiralScanning",
+        neurodata_type_inc="DynamicTable",
+        name="SpiralScanning",
+        doc=("table of parameters defining the spiral scanning beam pattern"),
+        attributes=[
+            NWBAttributeSpec(
+                name="spiral_duration",
+                doc="time duration for a single spiral (unit: sec)",
+                dtype="float",
+            ),
+            NWBAttributeSpec(
+                name="spiral_diameter",
+                doc="spiral diameter of each spot (unit: m)",
+                dtype="float",
+            ),
+            NWBAttributeSpec(
+                name="spiral_height",
+                doc="spiral height of each spot (unit: m)",
+                dtype="float",
+            ),
+            NWBAttributeSpec(
+                name="num_revolutions",
+                doc="number of turns within a spiral",
+                dtype="int",
+            ),
+            NWBAttributeSpec(
+                name="num_spirals",
+                doc="numbers of repetitions for each spiral",
+                dtype="int",
+            ),
+            NWBAttributeSpec(
+                name="isi_spiral",
+                doc="duration of the interval between each individual spiral (unit: sec)",
+                dtype="float",
+            ),
+        ],
+    )
+
+    TemporalFocusing = NWBGroupSpec(
+        neurodata_type_def="TemporalFocusing",
+        neurodata_type_inc="DynamicTable",
+        name="TemporalFocusing",
+        doc=("table of parameters defining the temporal focusing beam-shaping"),
+        attributes=[
+            NWBAttributeSpec(
+                name="lateral_psf",
+                doc="measured lateral spatial profile or point spread function, expressed as mean ± s.d",
+                dtype="text",
+            ),
+            NWBAttributeSpec(
+                name="axial_psf",
+                doc="measured axial spatial profile or point spread function, expressed as mean ± s.d",
+                dtype="text",
+            ),
+            NWBAttributeSpec(
+                name="lateral_width",
+                doc="the size of the spot in the lateral dimension (unit: m)",
+                dtype="float",
+            ),
+            NWBAttributeSpec(
+                name="axial_width",
+                doc="the size of the spot in the axial dimension (unit: m)",
+                dtype="float",
+            ),
+            NWBAttributeSpec(
+                name="duration",
+                doc="the time duration for a single spot (unit: sec)",
+                dtype="float",
+            ),
+            NWBAttributeSpec(
+                name="num_repetitions",
+                doc="numbers of repetitions for each spot",
+                dtype="int",
+            ),
+            NWBAttributeSpec(
+                name="isi",
+                doc="duration of the interval between each individual spot (unit: sec)",
+                dtype="float",
+            ),
+        ],
+    )
 
     HolographicStimulusPattern = NWBGroupSpec(
         neurodata_type_def="HolographicStimulusPattern",
         neurodata_type_inc="LabMetaData",
         name="HolographicStimulusPattern",
-        doc=("Excitation pattern of a single ROI."),
-        # TODO add the appropriate data that describe the stimulus pattern e.g. for spiral scanning we will need to define
-        # spiral_duration/repetition_frequency/revolution while for temporal focusing we will need to define
-        # Optical lateral PSF/Optical axial PSF related paramenters
+        doc=("Holographic excitation single ROI"),
+        groups=[
+            NWBGroupSpec(
+                name="spiral_scanning",
+                neurodata_type_inc="SpiralScanning",
+                doc="The spiral scanning beam pattern is obtained by scanning the beam spot following a spiral path over the somatic membrane ",
+            ),
+            NWBGroupSpec(
+                name="temporal_focusing",
+                neurodata_type_inc="TemporalFocusing",
+                doc="The temporal focusing beam-shaping is accomplished by manipulating light phases to generate custom-shaped light patterns that can illuminate extended lateral regions (e.g., the entire cell body) simultaneously.",
+            ),
+        ],
     )
 
     HolographicStimulusSite = NWBGroupSpec(
@@ -99,6 +192,8 @@ def main():
 
     # TODO: add all of your new data types to this list
     new_data_types = [
+        SpiralScanning,
+        TemporalFocusing,
         HolographicStimulusPattern,
         HolographicStimulusSite,
         HolographicSeries,

@@ -14,5 +14,6 @@ namespaces:
   - namespace: hdmf-common
     neurodata_types:
     - DynamicTableRegion
+    - DynamicTable
   - source: ndx-holographic-stimulation.extensions.yaml
   version: 0.1.0

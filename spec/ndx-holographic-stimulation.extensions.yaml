@@ -1,8 +1,69 @@
 groups:
+- neurodata_type_def: SpiralScanning
+  neurodata_type_inc: DynamicTable
+  name: SpiralScanning
+  doc: table of parameters defining the spiral scanning beam pattern
+  attributes:
+  - name: spiral_duration
+    dtype: float
+    doc: 'time duration for a single spiral (unit: sec)'
+  - name: spiral_diameter
+    dtype: float
+    doc: 'spiral diameter of each spot (unit: m)'
+  - name: spiral_height
+    dtype: float
+    doc: 'spiral height of each spot (unit: m)'
+  - name: num_revolutions
+    dtype: int
+    doc: number of turns within a spiral
+  - name: num_spirals
+    dtype: int
+    doc: numbers of repetitions for each spiral
+  - name: isi_spiral
+    dtype: float
+    doc: 'duration of the interval between each individual spiral (unit: sec)'
+- neurodata_type_def: TemporalFocusing
+  neurodata_type_inc: DynamicTable
+  name: TemporalFocusing
+  doc: table of parameters defining the temporal focusing beam-shaping
+  attributes:
+  - name: lateral_psf
+    dtype: text
+    doc: measured lateral spatial profile or point spread function, expressed as mean
+      ± s.d
+  - name: axial_psf
+    dtype: text
+    doc: measured axial spatial profile or point spread function, expressed as mean
+      ± s.d
+  - name: lateral_width
+    dtype: float
+    doc: 'the size of the spot in the lateral dimension (unit: m)'
+  - name: axial_width
+    dtype: float
+    doc: 'the size of the spot in the axial dimension (unit: m)'
+  - name: duration
+    dtype: float
+    doc: 'the time duration for a single spot (unit: sec)'
+  - name: num_repetitions
+    dtype: int
+    doc: numbers of repetitions for each spot
+  - name: isi
+    dtype: float
+    doc: 'duration of the interval between each individual spot (unit: sec)'
 - neurodata_type_def: HolographicStimulusPattern
   neurodata_type_inc: LabMetaData
   name: HolographicStimulusPattern
-  doc: Excitation pattern of a single ROI.
+  doc: Holographic excitation single ROI
+  groups:
+  - name: spiral_scanning
+    neurodata_type_inc: SpiralScanning
+    doc: 'The spiral scanning beam pattern is obtained by scanning the beam spot following
+      a spiral path over the somatic membrane '
+  - name: temporal_focusing
+    neurodata_type_inc: TemporalFocusing
+    doc: The temporal focusing beam-shaping is accomplished by manipulating light
+      phases to generate custom-shaped light patterns that can illuminate extended
+      lateral regions (e.g., the entire cell body) simultaneously.
 - neurodata_type_def: HolographicStimulusSite
   neurodata_type_inc: OptogeneticStimulusSite
   doc: An extension of OptogeneticStimulusSite to include the geometrical representation
