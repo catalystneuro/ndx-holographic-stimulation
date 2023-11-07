@@ -5,23 +5,23 @@ groups:
   doc: table of parameters defining the spiral scanning beam pattern
   attributes:
   - name: spiral_duration
-    dtype: float
-    doc: 'time duration for a single spiral (unit: sec)'
+    dtype: float32
+    doc: time duration for a single spiral, in sec
   - name: spiral_diameter
-    dtype: float
-    doc: 'spiral diameter of each spot (unit: m)'
+    dtype: float32
+    doc: spiral diameter of each spot, in m
   - name: spiral_height
-    dtype: float
-    doc: 'spiral height of each spot (unit: m)'
+    dtype: float32
+    doc: spiral height of each spot, in m
   - name: num_revolutions
-    dtype: int
+    dtype: int8
     doc: number of turns within a spiral
   - name: num_spirals
-    dtype: int
+    dtype: int8
     doc: numbers of repetitions for each spiral
   - name: isi_spiral
-    dtype: float
-    doc: 'duration of the interval between each individual spiral (unit: sec)'
+    dtype: float32
+    doc: duration of the interval between each individual spiral, in sec
 - neurodata_type_def: TemporalFocusing
   neurodata_type_inc: DynamicTable
   name: TemporalFocusing
@@ -30,30 +30,34 @@ groups:
   - name: lateral_psf
     dtype: text
     doc: measured lateral spatial profile or point spread function, expressed as mean
-      ± s.d
+      [um] ± s.d [um]
   - name: axial_psf
     dtype: text
     doc: measured axial spatial profile or point spread function, expressed as mean
-      ± s.d
+      [um]± s.d [um]
   - name: lateral_width
-    dtype: float
-    doc: 'the size of the spot in the lateral dimension (unit: m)'
+    dtype: float32
+    doc: the size of the spot in the lateral dimension, in m
   - name: axial_width
-    dtype: float
-    doc: 'the size of the spot in the axial dimension (unit: m)'
+    dtype: float32
+    doc: the size of the spot in the axial dimension, in m
   - name: duration
-    dtype: float
-    doc: 'the time duration for a single spot (unit: sec)'
+    dtype: float32
+    doc: the time duration for a single spot, in sec
   - name: num_repetitions
-    dtype: int
+    dtype: int8
     doc: numbers of repetitions for each spot
   - name: isi
-    dtype: float
-    doc: 'duration of the interval between each individual spot (unit: sec)'
+    dtype: float32
+    doc: duration of the interval between each individual spot, in sec
 - neurodata_type_def: HolographicStimulusPattern
   neurodata_type_inc: LabMetaData
   name: HolographicStimulusPattern
   doc: Holographic excitation single ROI
+  attributes:
+  - name: description
+    dtype: text
+    doc: description of the stimulus pattern
   groups:
   - name: spiral_scanning
     neurodata_type_inc: SpiralScanning
@@ -85,7 +89,7 @@ groups:
   attributes:
   - name: unit
     dtype: text
-    default_value: W
+    default_value: watts
     doc: SI unit of data
     required: false
   datasets:
@@ -97,11 +101,11 @@ groups:
     shape:
     - null
     - null
-    doc: The data values. May be 1D or 2D. The first dimension must be time. The optional
-      second dimension represents ROIs
+    doc: The data values. The first dimension must be time. The second dimension represents
+      ROIs
   - name: rois
     neurodata_type_inc: DynamicTableRegion
-    dtype: int
+    dtype: int8
     doc: references rows of ROI table
   links:
   - name: site

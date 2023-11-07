@@ -33,33 +33,33 @@ def main():
         attributes=[
             NWBAttributeSpec(
                 name="spiral_duration",
-                doc="time duration for a single spiral (unit: sec)",
-                dtype="float",
+                doc="time duration for a single spiral, in sec",
+                dtype="float32",
             ),
             NWBAttributeSpec(
                 name="spiral_diameter",
-                doc="spiral diameter of each spot (unit: m)",
-                dtype="float",
+                doc="spiral diameter of each spot, in m",
+                dtype="float32",
             ),
             NWBAttributeSpec(
                 name="spiral_height",
-                doc="spiral height of each spot (unit: m)",
-                dtype="float",
+                doc="spiral height of each spot, in m",
+                dtype="float32",
             ),
             NWBAttributeSpec(
                 name="num_revolutions",
                 doc="number of turns within a spiral",
-                dtype="int",
+                dtype="int8",
             ),
             NWBAttributeSpec(
                 name="num_spirals",
                 doc="numbers of repetitions for each spiral",
-                dtype="int",
+                dtype="int8",
             ),
             NWBAttributeSpec(
                 name="isi_spiral",
-                doc="duration of the interval between each individual spiral (unit: sec)",
-                dtype="float",
+                doc="duration of the interval between each individual spiral, in sec",
+                dtype="float32",
             ),
         ],
     )
@@ -72,38 +72,38 @@ def main():
         attributes=[
             NWBAttributeSpec(
                 name="lateral_psf",
-                doc="measured lateral spatial profile or point spread function, expressed as mean ± s.d",
+                doc="measured lateral spatial profile or point spread function, expressed as mean [um] ± s.d [um]",
                 dtype="text",
             ),
             NWBAttributeSpec(
                 name="axial_psf",
-                doc="measured axial spatial profile or point spread function, expressed as mean ± s.d",
+                doc="measured axial spatial profile or point spread function, expressed as mean [um]± s.d [um]",
                 dtype="text",
             ),
             NWBAttributeSpec(
                 name="lateral_width",
-                doc="the size of the spot in the lateral dimension (unit: m)",
-                dtype="float",
+                doc="the size of the spot in the lateral dimension, in m",
+                dtype="float32",
             ),
             NWBAttributeSpec(
                 name="axial_width",
-                doc="the size of the spot in the axial dimension (unit: m)",
-                dtype="float",
+                doc="the size of the spot in the axial dimension, in m",
+                dtype="float32",
             ),
             NWBAttributeSpec(
                 name="duration",
-                doc="the time duration for a single spot (unit: sec)",
-                dtype="float",
+                doc="the time duration for a single spot, in sec",
+                dtype="float32",
             ),
             NWBAttributeSpec(
                 name="num_repetitions",
                 doc="numbers of repetitions for each spot",
-                dtype="int",
+                dtype="int8",
             ),
             NWBAttributeSpec(
                 name="isi",
-                doc="duration of the interval between each individual spot (unit: sec)",
-                dtype="float",
+                doc="duration of the interval between each individual spot, in sec",
+                dtype="float32",
             ),
         ],
     )
@@ -123,6 +123,13 @@ def main():
                 name="temporal_focusing",
                 neurodata_type_inc="TemporalFocusing",
                 doc="The temporal focusing beam-shaping is accomplished by manipulating light phases to generate custom-shaped light patterns that can illuminate extended lateral regions (e.g., the entire cell body) simultaneously.",
+            ),
+        ],
+        attributes=[
+            NWBAttributeSpec(
+                name="description",
+                doc="description of the stimulus pattern",
+                dtype="text",
             ),
         ],
     )
@@ -160,14 +167,14 @@ def main():
                 name="unit",
                 doc="SI unit of data",
                 dtype="text",
-                default_value="W",
+                default_value="watts",
             )
         ],
         datasets=[
             NWBDatasetSpec(
                 name="data",
                 doc=(
-                    "The data values. May be 1D or 2D. The first dimension must be time. The optional second dimension represents ROIs"
+                    "The data values. The first dimension must be time. The second dimension represents ROIs"
                 ),
                 dtype="numeric",
                 shape=(None, None),
@@ -176,7 +183,7 @@ def main():
             NWBDatasetSpec(
                 name="rois",
                 doc="references rows of ROI table",
-                dtype="int",
+                dtype="int8",
                 neurodata_type_inc="DynamicTableRegion",
             ),
         ],
