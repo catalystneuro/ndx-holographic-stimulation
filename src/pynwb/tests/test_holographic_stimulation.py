@@ -12,6 +12,7 @@ from ndx_holographic_stimulation import (
     HolographicSeries,
     HolographicStimulusSite,
     HolographicStimulusPattern,
+    SpiralScanning,
 )
 from pynwb.ophys import ImageSegmentation, OpticalChannel
 from hdmf.testing import TestCase
@@ -48,7 +49,7 @@ class TestHolographicSeries(TestCase):
         # metadata for holographic series
         self.series_name = "HolographicSeries"
         self.series_description = "Holographic stimulus on 2 rois"
-        self.unit = "W"
+        self.unit = "watts"
         # metadata for holographic stimulus site
         self.site_name = "HolographicStimulusSite"
         self.site_description = "This is an example holographic site."
@@ -57,7 +58,13 @@ class TestHolographicSeries(TestCase):
         self.location = "VISrl"
         # metadata for holographic stimulus pattern
         self.pattern_name = "HolographicStimulusPattern"
-        self.pattern_description = "spiral, 5 revolutions, 5 repetitions"
+        self.pattern_description = "Spiral scanning beam pattern"
+        self.spiral_duration=15e-3
+        self.spiral_diameter=15e-6
+        self.spiral_height=10e-6
+        self.num_revolutions=5
+        self.num_spirals=5
+        self.isi_spiral=10e-3
 
     @classmethod
     def tearDownClass(cls):
@@ -69,8 +76,22 @@ class TestHolographicSeries(TestCase):
             )
 
     def test_holographic_series_constructor(self):
-        stimulus_pattern = HolographicStimulusPattern()
-        self.nwbfile.add_lab_meta_data(stimulus_pattern) #TODO extend stimulus pattern a timeseries and add to stimulus module or a labmetadata and add to general 
+        spiral_scanning=SpiralScanning(
+            spiral_duration=self.spiral_duration,
+            spiral_diameter=self.spiral_diameter,
+            spiral_height=self.spiral_height,
+            num_revolutions=self.num_revolutions,
+            num_spirals=self.num_spirals,
+            isi_spiral=self.isi_spiral,
+            description=self.pattern_description
+        )
+        stimulus_pattern = HolographicStimulusPattern(
+            name=self.pattern_name,
+            description=self.pattern_description,
+            spiral_scanning=spiral_scanning,
+        )
+        self.nwbfile.add_lab_meta_data(stimulus_pattern)
+
         holo_stim_site = HolographicStimulusSite(
             name=self.site_name,
             device=self.device,
@@ -103,7 +124,9 @@ class TestHolographicSeries(TestCase):
 
     def test_holographic_series_roundtrip(self):
         stimulus_pattern = HolographicStimulusPattern()
-        self.nwbfile.add_lab_meta_data(stimulus_pattern) #TODO extend stimulus pattern a timeseries and add to stimulus module or a labmetadata and add to general 
+        self.nwbfile.add_lab_meta_data(
+            stimulus_pattern
+        )  # TODO extend stimulus pattern a timeseries and add to stimulus module or a labmetadata and add to general
 
         holo_stim_site = HolographicStimulusSite(
             name=self.site_name,
