@@ -59,12 +59,14 @@ class TestHolographicSeries(TestCase):
         # metadata for holographic stimulus pattern
         self.pattern_name = "HolographicStimulusPattern"
         self.pattern_description = "Spiral scanning beam pattern"
-        self.spiral_duration=15e-3
-        self.spiral_diameter=15e-6
-        self.spiral_height=10e-6
-        self.num_revolutions=5
-        self.num_spirals=5
-        self.isi_spiral=10e-3
+        #metadata for spiral scanning pattern
+        self.spiral_scanning_name = "SpiralScanning"
+        self.spiral_duration = 15e-3
+        self.spiral_diameter = 15e-6
+        self.spiral_height = 10e-6
+        self.num_revolutions = 5
+        self.num_spirals = 5
+        self.isi_spiral = 10e-3
 
     @classmethod
     def tearDownClass(cls):
@@ -76,14 +78,15 @@ class TestHolographicSeries(TestCase):
             )
 
     def test_holographic_series_constructor(self):
-        spiral_scanning=SpiralScanning(
+        spiral_scanning = SpiralScanning(
+            name=self.pattern_name,
             spiral_duration=self.spiral_duration,
             spiral_diameter=self.spiral_diameter,
             spiral_height=self.spiral_height,
             num_revolutions=self.num_revolutions,
             num_spirals=self.num_spirals,
             isi_spiral=self.isi_spiral,
-            description=self.pattern_description
+            description=self.pattern_description,
         )
         stimulus_pattern = HolographicStimulusPattern(
             name=self.pattern_name,
@@ -123,10 +126,22 @@ class TestHolographicSeries(TestCase):
         assert holographic_stimulation in self.nwbfile.stimulus.values()
 
     def test_holographic_series_roundtrip(self):
-        stimulus_pattern = HolographicStimulusPattern()
-        self.nwbfile.add_lab_meta_data(
-            stimulus_pattern
-        )  # TODO extend stimulus pattern a timeseries and add to stimulus module or a labmetadata and add to general
+        spiral_scanning = SpiralScanning(
+            name=self.pattern_name,
+            spiral_duration=self.spiral_duration,
+            spiral_diameter=self.spiral_diameter,
+            spiral_height=self.spiral_height,
+            num_revolutions=self.num_revolutions,
+            num_spirals=self.num_spirals,
+            isi_spiral=self.isi_spiral,
+            description=self.pattern_description,
+        )
+        stimulus_pattern = HolographicStimulusPattern(
+            name=self.pattern_name,
+            description=self.pattern_description,
+            spiral_scanning=spiral_scanning,
+        )
+        self.nwbfile.add_lab_meta_data(stimulus_pattern)
 
         holo_stim_site = HolographicStimulusSite(
             name=self.site_name,
@@ -161,8 +176,4 @@ class TestHolographicSeries(TestCase):
         with NWBHDF5IO(nwbfile_path, mode="r") as io:
             nwbfile_in = io.read()
             assert self.series_name in nwbfile_in.stimulus.keys()
-            # device_metadata = deepcopy(self.miniscope_mscam_metadata)
-            # device_name = device_metadata.pop("name")
-            # self.assertIn(device_name, nwbfile_in.devices)
-            # device_in = nwbfile_in.devices[device_name]
-            # self.assertDictEqual(device_in.fields, device_metadata)
+

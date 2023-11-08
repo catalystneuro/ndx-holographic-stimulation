@@ -28,7 +28,6 @@ def main():
     SpiralScanning = NWBGroupSpec(
         neurodata_type_def="SpiralScanning",
         neurodata_type_inc="DynamicTable",
-        name="SpiralScanning",
         doc=("table of parameters defining the spiral scanning beam pattern"),
         attributes=[
             NWBAttributeSpec(
@@ -67,7 +66,6 @@ def main():
     TemporalFocusing = NWBGroupSpec(
         neurodata_type_def="TemporalFocusing",
         neurodata_type_inc="DynamicTable",
-        name="TemporalFocusing",
         doc=("table of parameters defining the temporal focusing beam-shaping"),
         attributes=[
             NWBAttributeSpec(
@@ -111,18 +109,19 @@ def main():
     HolographicStimulusPattern = NWBGroupSpec(
         neurodata_type_def="HolographicStimulusPattern",
         neurodata_type_inc="LabMetaData",
-        name="HolographicStimulusPattern",
         doc=("Holographic excitation single ROI"),
         groups=[
             NWBGroupSpec(
                 name="spiral_scanning",
                 neurodata_type_inc="SpiralScanning",
                 doc="The spiral scanning beam pattern is obtained by scanning the beam spot following a spiral path over the somatic membrane ",
+                quantity="?",
             ),
             NWBGroupSpec(
                 name="temporal_focusing",
                 neurodata_type_inc="TemporalFocusing",
                 doc="The temporal focusing beam-shaping is accomplished by manipulating light phases to generate custom-shaped light patterns that can illuminate extended lateral regions (e.g., the entire cell body) simultaneously.",
+                quantity="?",
             ),
         ],
         attributes=[
