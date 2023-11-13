@@ -13,6 +13,7 @@ from ndx_holographic_stimulation import (
     HolographicStimulusSite,
     HolographicStimulusPattern,
     SpiralScanning,
+    TemporalFocusing,
 )
 from pynwb.ophys import ImageSegmentation, OpticalChannel
 from hdmf.testing import TestCase
@@ -49,11 +50,11 @@ class TestHolographicSeries(TestCase):
         # metadata for holographic series
         self.series_name = "HolographicSeries"
         self.series_description = "Holographic stimulus on 2 rois"
+        self.stimulation_wavelenght = 600.0
         self.unit = "watts"
         # metadata for holographic stimulus site
         self.site_name = "HolographicStimulusSite"
         self.site_description = "This is an example holographic site."
-        self.excitation_lambda = 600.0
         self.effector = "ChR2"
         self.location = "VISrl"
         # metadata for holographic stimulus pattern
@@ -99,10 +100,10 @@ class TestHolographicSeries(TestCase):
             name=self.site_name,
             device=self.device,
             description=self.site_description,
-            excitation_lambda=self.excitation_lambda,  # nm
+            excitation_lambda=self.stimulation_wavelenght,  # nm
             effector=self.effector,
             location=self.location,
-            stimulus_pattern=stimulus_pattern,
+            rois=self.roi_table_region,
         )
         self.nwbfile.add_ogen_site(holo_stim_site)
 
@@ -114,9 +115,11 @@ class TestHolographicSeries(TestCase):
             description=self.series_description,
             data=data,
             unit=self.unit,
-            rois=self.roi_table_region,
-            site=holo_stim_site,
             timestamps=timestamps,
+            stimulation_wavelenght=self.stimulation_wavelenght,
+            stimulus_pattern=stimulus_pattern,
+            site=holo_stim_site,            
+            device=self.device,
         )
         assert_array_equal(holographic_stimulation.data, data)
 
@@ -147,10 +150,10 @@ class TestHolographicSeries(TestCase):
             name=self.site_name,
             device=self.device,
             description=self.site_description,
-            excitation_lambda=self.excitation_lambda,  # nm
+            excitation_lambda=self.stimulation_wavelenght,  # nm
             effector=self.effector,
             location=self.location,
-            stimulus_pattern=stimulus_pattern,
+            rois=self.roi_table_region,
         )
         self.nwbfile.add_ogen_site(holo_stim_site)
 
@@ -162,9 +165,11 @@ class TestHolographicSeries(TestCase):
             description=self.series_description,
             data=data,
             unit=self.unit,
-            rois=self.roi_table_region,
-            site=holo_stim_site,
             timestamps=timestamps,
+            stimulation_wavelenght=self.stimulation_wavelenght,
+            stimulus_pattern=stimulus_pattern,
+            site=holo_stim_site,            
+            device=self.device,
         )
 
         self.nwbfile.add_stimulus(holographic_stimulation)
