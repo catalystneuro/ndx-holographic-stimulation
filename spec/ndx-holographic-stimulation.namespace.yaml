@@ -3,12 +3,14 @@ namespaces:
   - Alessandra Trapani
   contact:
   - alessandramaria.trapani@gmail.com
-  doc: My NWB extension
+  doc: An extension of for the optogenetic module to include the holographic photostimulation
+    and its different patterns
   name: ndx-holographic-stimulation
   schema:
   - namespace: core
     neurodata_types:
     - TimeSeries
+    - Device
     - OptogeneticStimulusSite
     - LabMetaData
   - namespace: hdmf-common

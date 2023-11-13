@@ -10,7 +10,7 @@ from pynwb.spec import NWBDatasetSpec, NWBLinkSpec, NWBDtypeSpec, NWBRefSpec
 def main():
     # these arguments were auto-generated from your cookiecutter inputs
     ns_builder = NWBNamespaceBuilder(
-        doc="""My NWB extension""",
+        doc="""An extension of for the optogenetic module to include the holographic photostimulation and its different patterns""",
         name="""ndx-holographic-stimulation""",
         version="""0.1.0""",
         author=list(map(str.strip, """Alessandra Trapani""".split(","))),
@@ -20,6 +20,7 @@ def main():
     )
 
     ns_builder.include_type("TimeSeries", namespace="core")
+    ns_builder.include_type("Device", namespace="core")
     ns_builder.include_type("OptogeneticStimulusSite", namespace="core")
     ns_builder.include_type("DynamicTableRegion", namespace="hdmf-common")
     ns_builder.include_type("DynamicTable", namespace="hdmf-common")
@@ -140,18 +141,22 @@ def main():
             "An extension of OptogeneticStimulusSite to include the geometrical representation for "
             "the stimulus."
         ),
-    )
-    HolographicStimulusSite.add_attribute(
-        name="effector",
-        doc="Light-activated effector protein expressed by the targeted cell (eg. ChR2)",
-        dtype="text",
-        required=False,
-    )
-    HolographicStimulusSite.add_link(
-        name="stimulus_pattern",
-        doc="link to the holographic stimulus pattern",
-        target_type="HolographicStimulusPattern",
-        quantity="?",
+        attributes=[
+            NWBAttributeSpec(
+                name="effector",
+                doc="Light-activated effector protein expressed by the targeted cell (eg. ChR2)",
+                dtype="text",
+                required=False,
+            ),
+        ],
+        datasets=[
+            NWBDatasetSpec(
+                name="rois",
+                doc="references rows of ROI table",
+                dtype="int8",
+                neurodata_type_inc="DynamicTableRegion",
+            ),
+        ],
     )
 
     HolographicSeries = NWBGroupSpec(
@@ -167,7 +172,12 @@ def main():
                 doc="SI unit of data",
                 dtype="text",
                 default_value="watts",
-            )
+            ),
+            NWBAttributeSpec(
+                name="stimulation_wavelenght",
+                doc="stimulation wavelenght in nm",
+                dtype="float",
+            ),
         ],
         datasets=[
             NWBDatasetSpec(
@@ -179,12 +189,6 @@ def main():
                 shape=(None, None),
                 dims=("num_times", "num_rois"),
             ),
-            NWBDatasetSpec(
-                name="rois",
-                doc="references rows of ROI table",
-                dtype="int8",
-                neurodata_type_inc="DynamicTableRegion",
-            ),
         ],
         links=[
             NWBLinkSpec(
@@ -192,6 +196,18 @@ def main():
                 doc="link to the holographic stimulus site",
                 target_type="HolographicStimulusSite",
                 quantity="*",
+            ),
+            NWBLinkSpec(
+                name="stimulus_pattern",
+                doc="link to the holographic stimulus pattern",
+                target_type="HolographicStimulusPattern",
+                quantity="?",
+            ),
+            NWBLinkSpec(
+                name="device",
+                doc="link to the device used for generate the photostimulation",
+                target_type="Device",
+                quantity="?",
             ),
         ],
     )

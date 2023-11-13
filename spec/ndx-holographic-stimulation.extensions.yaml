@@ -76,11 +76,11 @@ groups:
     dtype: text
     doc: Light-activated effector protein expressed by the targeted cell (eg. ChR2)
     required: false
-  links:
-  - name: stimulus_pattern
-    target_type: HolographicStimulusPattern
-    doc: link to the holographic stimulus pattern
-    quantity: '?'
+  datasets:
+  - name: rois
+    neurodata_type_inc: DynamicTableRegion
+    dtype: int8
+    doc: references rows of ROI table
 - neurodata_type_def: HolographicSeries
   neurodata_type_inc: TimeSeries
   doc: An extension of OptogeneticSeries to include the holographic representation
@@ -91,6 +91,9 @@ groups:
     default_value: watts
     doc: SI unit of data
     required: false
+  - name: stimulation_wavelenght
+    dtype: float
+    doc: stimulation wavelenght in nm
   datasets:
   - name: data
     dtype: numeric
@@ -102,12 +105,16 @@ groups:
     - null
     doc: The data values. The first dimension must be time. The second dimension represents
       ROIs
-  - name: rois
-    neurodata_type_inc: DynamicTableRegion
-    dtype: int8
-    doc: references rows of ROI table
   links:
   - name: site
     target_type: HolographicStimulusSite
     doc: link to the holographic stimulus site
     quantity: '*'
+  - name: stimulus_pattern
+    target_type: HolographicStimulusPattern
+    doc: link to the holographic stimulus pattern
+    quantity: '?'
+  - name: device
+    target_type: Device
+    doc: link to the device used for generate the photostimulation
+    quantity: '?'
