@@ -1,6 +1,5 @@
 # ndx-holographic-stimulation Extension for NWB
-
-Description of the extension
+![extension schema](./images/schema.png)
 
 ## Installation
 
@@ -15,8 +14,10 @@ from ndx_holographic_stimulation import (
     HolographicSeries,
     HolographicStimulusSite,
     HolographicStimulusPattern,
+    SpiralScanning,
+    TemporalFocusing,
 )
-from pynwb.ophys import ImageSegmentation, OpticalChannel
+from pynwb.ophys import PlaneSegmentation, ImageSegmentation, OpticalChannel
 
 nwbfile = NWBFile(
     session_description="session_description",
@@ -53,27 +54,21 @@ imaging_plane = nwbfile.create_imaging_plane(
     origin_coords_unit="meters",
 )
 
-img_seg = ImageSegmentation()
-
-plane_seg = img_seg.create_plane_segmentation(
+n_rois = 2
+plane_segmentation = PlaneSegmentation(
     name="PlaneSegmentation",
     description="output from segmenting my favorite imaging plane",
     imaging_plane=imaging_plane,
 )
-for _ in range(2):
-    image_mask = np.zeros((100, 100))
+for _ in range(n_rois):
+    plane_segmentation.add_roi(image_mask=np.zeros((10, 10)))
 
-    # randomly generate example image masks
-    x = np.random.randint(0, 95)
-    y = np.random.randint(0, 95)
-    # define an example 4 x 3 region of pixels of weight '1'
-    pixel_mask = []
-    for ix in range(x, x + 4):
-        for iy in range(y, y + 3):
-            pixel_mask.append((ix, iy, 1))
-    plane_seg.add_roi(pixel_mask=pixel_mask)
+if nwbfile is not None:
+    if "ophys" not in nwbfile.processing:
+        nwbfile.create_processing_module("ophys", "ophys")
+    nwbfile.processing["ophys"].add(plane_segmentation)
 
-roi_table_region = plane_seg.create_roi_table_region(
+roi_table_region = plane_segmentation.create_roi_table_region(
     region=[0, 1], description="the first of two ROIs"
 )
 ```
@@ -84,12 +79,26 @@ device_stimulating = nwbfile.create_device(
     description="Microsope used for holography",
 )
 ```
-Define the stimulus pattern: TO BE UPDATED
+Define the stimulus pattern:
 ```python
-stimulus_pattern = HolographicStimulusPattern(
-    name="stimulus_pattern", 
-    description="spiral, 5 revolutions, 5 repetitions",
+# metadata for spiral scanning pattern
+spiral_scanning = SpiralScanning(
+    name="SpiralScanning",
+    description="spiral beam pattern",
+    spiral_duration=15e-3,
+    spiral_diameter=15e-6,
+    spiral_height=10e-6,
+    num_revolutions=5,
+    num_spirals=5,
+    isi_spiral=10e-3,
 )
+
+stimulus_pattern = HolographicStimulusPattern(
+    name="stimulus_pattern",
+    description="spiral, 5 revolutions, 5 repetitions",
+    spiral_scanning=spiral_scanning,
+)
+nwbfile.add_lab_meta_data(stimulus_pattern)
 ```
 Define the stimulus site: specify the effector and the stimulus pattern used
 ```python
@@ -100,7 +109,7 @@ holo_stim_site = HolographicStimulusSite(
     excitation_lambda=600.0,  # nm
     effector="ChR2",
     location="VISrl",
-    stimulus_pattern=stimulus_pattern,
+    rois=roi_table_region,
 )
 nwbfile.add_ogen_site(holo_stim_site)
 ```
@@ -111,11 +120,14 @@ timestamps = np.linspace(0, 10, num=100)  # a timestamp for every frame
 
 holographic_stimulation = HolographicSeries(
     name="holographic_stimulation",
-    description="Holographic stimulus on 12 rois",
+    description="Holographic stimulus on 2 rois",
     data=data,
-    rois=roi_table_region,
-    site=holo_stim_site,
+    unit="W",
     timestamps=timestamps,
+    stimulation_wavelenght= 600.0, #nm
+    stimulus_pattern=stimulus_pattern,
+    site=holo_stim_site,
+    device=device_stimulating,
 )
 
 nwbfile.add_stimulus(holographic_stimulation)
