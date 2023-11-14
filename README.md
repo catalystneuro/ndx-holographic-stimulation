@@ -79,9 +79,8 @@ device_stimulating = nwbfile.create_device(
     description="Microsope used for holography",
 )
 ```
-Define the stimulus pattern:
+Define the stimulus pattern, e.g Spiral Scanning pattern:
 ```python
-# metadata for spiral scanning pattern
 spiral_scanning = SpiralScanning(
     name="SpiralScanning",
     description="spiral beam pattern",
@@ -97,6 +96,25 @@ stimulus_pattern = HolographicStimulusPattern(
     name="stimulus_pattern",
     description="spiral, 5 revolutions, 5 repetitions",
     spiral_scanning=spiral_scanning,
+)
+nwbfile.add_lab_meta_data(stimulus_pattern)
+```
+Define the stimulus pattern, e.g Temporal Focusing pattern:
+```python
+temporal_focusing = TemporalFocusing(
+    name="TemporalFocusing",
+    description="temporal focusing pattern",
+    lateral_psf = "9e-6 m ± 0.7e-6 m",
+    axial_psf = "32e-6 m ± 1.6e-6 m",
+    duration = 10e-3,
+    num_repetitions = 10,
+    isi = 0.02,
+)
+
+stimulus_pattern = HolographicStimulusPattern(
+    name="stimulus_pattern",
+    description="temporal focusing",
+    temporal_focusing=temporal_focusing,
 )
 nwbfile.add_lab_meta_data(stimulus_pattern)
 ```
