@@ -59,8 +59,8 @@ class TestHolographicSeries(TestCase):
         self.location = "VISrl"
         # metadata for holographic stimulus pattern
         self.pattern_name = "HolographicStimulusPattern"
-        self.pattern_description = "Spiral scanning beam pattern"
-        #metadata for spiral scanning pattern
+        self.pattern_description = "holographic beam pattern"
+        # metadata for spiral scanning pattern
         self.spiral_scanning_name = "SpiralScanning"
         self.spiral_duration = 15e-3
         self.spiral_diameter = 15e-6
@@ -68,6 +68,13 @@ class TestHolographicSeries(TestCase):
         self.num_revolutions = 5
         self.num_spirals = 5
         self.isi_spiral = 10e-3
+        # metadata for temporal focusing pattern
+        self.temporal_focusing_name = "TemporalFocusing"
+        self.lateral_psf = "9e-6 m ± 0.7e-6 m"
+        self.axial_psf = "32e-6 m ± 1.6e-6 m"
+        self.duration = 10e-3
+        self.num_repetitions = 10
+        self.isi = 0.02
 
     @classmethod
     def tearDownClass(cls):
@@ -78,7 +85,7 @@ class TestHolographicSeries(TestCase):
                 f"Unable to fully clean the temporary directory: {cls.test_dir}\n\nPlease remove it manually."
             )
 
-    def test_holographic_series_constructor(self):
+    def test_holographic_series_constructor_with_spiralscanning(self):
         spiral_scanning = SpiralScanning(
             name=self.pattern_name,
             spiral_duration=self.spiral_duration,
@@ -96,6 +103,9 @@ class TestHolographicSeries(TestCase):
         )
         self.nwbfile.add_lab_meta_data(stimulus_pattern)
 
+        assert stimulus_pattern.name in self.nwbfile.lab_meta_data.keys()
+        assert stimulus_pattern in self.nwbfile.lab_meta_data.values()
+
         holo_stim_site = HolographicStimulusSite(
             name=self.site_name,
             device=self.device,
@@ -106,6 +116,9 @@ class TestHolographicSeries(TestCase):
             rois=self.roi_table_region,
         )
         self.nwbfile.add_ogen_site(holo_stim_site)
+
+        assert holo_stim_site.name in self.nwbfile.ogen_sites.keys()
+        assert holo_stim_site in self.nwbfile.ogen_sites.values()
 
         data = np.random.rand(100, self.n_rois)  # ntime x nroi
         timestamps = np.linspace(0, 10, num=100)  # a timestamp for every frame
@@ -118,7 +131,7 @@ class TestHolographicSeries(TestCase):
             timestamps=timestamps,
             stimulation_wavelenght=self.stimulation_wavelenght,
             stimulus_pattern=stimulus_pattern,
-            site=holo_stim_site,            
+            site=holo_stim_site,
             device=self.device,
         )
         assert_array_equal(holographic_stimulation.data, data)
@@ -128,7 +141,7 @@ class TestHolographicSeries(TestCase):
         assert holographic_stimulation.name in self.nwbfile.stimulus.keys()
         assert holographic_stimulation in self.nwbfile.stimulus.values()
 
-    def test_holographic_series_roundtrip(self):
+    def test_holographic_series_roundtrip_with_spiralscanning(self):
         spiral_scanning = SpiralScanning(
             name=self.pattern_name,
             spiral_duration=self.spiral_duration,
@@ -168,7 +181,7 @@ class TestHolographicSeries(TestCase):
             timestamps=timestamps,
             stimulation_wavelenght=self.stimulation_wavelenght,
             stimulus_pattern=stimulus_pattern,
-            site=holo_stim_site,            
+            site=holo_stim_site,
             device=self.device,
         )
 
@@ -181,4 +194,119 @@ class TestHolographicSeries(TestCase):
         with NWBHDF5IO(nwbfile_path, mode="r") as io:
             nwbfile_in = io.read()
             assert self.series_name in nwbfile_in.stimulus.keys()
+            assert_array_equal(nwbfile_in.stimulus[self.series_name].data, data)
 
+            assert self.site_name in nwbfile_in.ogen_sites.keys()
+            assert self.pattern_name in nwbfile_in.lab_meta_data.keys()
+
+    def test_holographic_series_constructor_with_temporalfocusing(self):
+        temporal_focusing = TemporalFocusing(
+            name=self.temporal_focusing_name,
+            description=self.pattern_description,
+            lateral_psf=self.lateral_psf,
+            axial_psf=self.axial_psf,
+            duration=self.duration,
+            num_repetitions=self.num_repetitions,
+            isi=self.isi,
+        )
+        stimulus_pattern = HolographicStimulusPattern(
+            name=self.pattern_name,
+            description=self.pattern_description,
+            temporal_focusing=temporal_focusing,
+        )
+        self.nwbfile.add_lab_meta_data(stimulus_pattern)
+
+        assert stimulus_pattern.name in self.nwbfile.lab_meta_data.keys()
+        assert stimulus_pattern in self.nwbfile.lab_meta_data.values()
+
+        holo_stim_site = HolographicStimulusSite(
+            name=self.site_name,
+            device=self.device,
+            description=self.site_description,
+            excitation_lambda=self.stimulation_wavelenght,  # nm
+            effector=self.effector,
+            location=self.location,
+            rois=self.roi_table_region,
+        )
+        self.nwbfile.add_ogen_site(holo_stim_site)
+
+        assert holo_stim_site.name in self.nwbfile.ogen_sites.keys()
+        assert holo_stim_site in self.nwbfile.ogen_sites.values()
+
+        data = np.random.rand(100, self.n_rois)  # ntime x nroi
+        timestamps = np.linspace(0, 10, num=100)  # a timestamp for every frame
+
+        holographic_stimulation = HolographicSeries(
+            name=self.series_name,
+            description=self.series_description,
+            data=data,
+            unit=self.unit,
+            timestamps=timestamps,
+            stimulation_wavelenght=self.stimulation_wavelenght,
+            stimulus_pattern=stimulus_pattern,
+            site=holo_stim_site,
+            device=self.device,
+        )
+        assert_array_equal(holographic_stimulation.data, data)
+
+        self.nwbfile.add_stimulus(holographic_stimulation)
+
+        assert holographic_stimulation.name in self.nwbfile.stimulus.keys()
+        assert holographic_stimulation in self.nwbfile.stimulus.values()
+
+    def test_holographic_series_roundtrip_with_temporalfocusing(self):
+        temporal_focusing = TemporalFocusing(
+            name=self.temporal_focusing_name,
+            description=self.pattern_description,
+            lateral_psf=self.lateral_psf,
+            axial_psf=self.axial_psf,
+            duration=self.duration,
+            num_repetitions=self.num_repetitions,
+            isi=self.isi,
+        )
+        stimulus_pattern = HolographicStimulusPattern(
+            name=self.pattern_name,
+            description=self.pattern_description,
+            temporal_focusing=temporal_focusing,
+        )
+        self.nwbfile.add_lab_meta_data(stimulus_pattern)
+
+        holo_stim_site = HolographicStimulusSite(
+            name=self.site_name,
+            device=self.device,
+            description=self.site_description,
+            excitation_lambda=self.stimulation_wavelenght,  # nm
+            effector=self.effector,
+            location=self.location,
+            rois=self.roi_table_region,
+        )
+        self.nwbfile.add_ogen_site(holo_stim_site)
+
+        data = np.random.rand(100, self.n_rois)  # ntime x nroi
+        timestamps = np.linspace(0, 10, num=100)  # a timestamp for every frame
+
+        holographic_stimulation = HolographicSeries(
+            name=self.series_name,
+            description=self.series_description,
+            data=data,
+            unit=self.unit,
+            timestamps=timestamps,
+            stimulation_wavelenght=self.stimulation_wavelenght,
+            stimulus_pattern=stimulus_pattern,
+            site=holo_stim_site,
+            device=self.device,
+        )
+
+        self.nwbfile.add_stimulus(holographic_stimulation)
+
+        nwbfile_path = self.test_dir / "test_holographic_stimulation_nwb.nwb"
+        with NWBHDF5IO(nwbfile_path, mode="w") as io:
+            io.write(self.nwbfile)
+
+        with NWBHDF5IO(nwbfile_path, mode="r") as io:
+            nwbfile_in = io.read()
+            assert self.series_name in nwbfile_in.stimulus.keys()
+            assert_array_equal(nwbfile_in.stimulus[self.series_name].data, data)
+
+            assert self.site_name in nwbfile_in.ogen_sites.keys()
+            assert self.pattern_name in nwbfile_in.lab_meta_data.keys()
