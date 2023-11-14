@@ -27,18 +27,12 @@ groups:
   attributes:
   - name: lateral_psf
     dtype: text
-    doc: measured lateral spatial profile or point spread function, expressed as mean
-      [um] ± s.d [um]
+    doc: estimated lateral spatial profile or point spread function, expressed as
+      mean [um] ± s.d [um]
   - name: axial_psf
     dtype: text
-    doc: measured axial spatial profile or point spread function, expressed as mean
+    doc: estimated axial spatial profile or point spread function, expressed as mean
       [um]± s.d [um]
-  - name: lateral_width
-    dtype: float32
-    doc: the size of the spot in the lateral dimension, in m
-  - name: axial_width
-    dtype: float32
-    doc: the size of the spot in the axial dimension, in m
   - name: duration
     dtype: float32
     doc: the time duration for a single spot, in sec

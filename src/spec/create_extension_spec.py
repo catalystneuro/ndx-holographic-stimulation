@@ -71,23 +71,13 @@ def main():
         attributes=[
             NWBAttributeSpec(
                 name="lateral_psf",
-                doc="measured lateral spatial profile or point spread function, expressed as mean [um] ± s.d [um]",
+                doc="estimated lateral spatial profile or point spread function, expressed as mean [um] ± s.d [um]",
                 dtype="text",
             ),
             NWBAttributeSpec(
                 name="axial_psf",
-                doc="measured axial spatial profile or point spread function, expressed as mean [um]± s.d [um]",
+                doc="estimated axial spatial profile or point spread function, expressed as mean [um]± s.d [um]",
                 dtype="text",
-            ),
-            NWBAttributeSpec(
-                name="lateral_width",
-                doc="the size of the spot in the lateral dimension, in m",
-                dtype="float32",
-            ),
-            NWBAttributeSpec(
-                name="axial_width",
-                doc="the size of the spot in the axial dimension, in m",
-                dtype="float32",
             ),
             NWBAttributeSpec(
                 name="duration",
