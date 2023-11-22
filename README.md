@@ -127,7 +127,6 @@ holo_stim_site = HolographicStimulusSite(
     excitation_lambda=600.0,  # nm
     effector="ChR2",
     location="VISrl",
-    rois=roi_table_region,
 )
 nwbfile.add_ogen_site(holo_stim_site)
 ```
@@ -145,6 +144,7 @@ holographic_stimulation = HolographicSeries(
     stimulation_wavelenght= 600.0, #nm
     stimulus_pattern=stimulus_pattern,
     site=holo_stim_site,
+    rois=roi_table_region,
     device=device_stimulating,
 )
 

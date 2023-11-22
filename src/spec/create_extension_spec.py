@@ -139,14 +139,6 @@ def main():
                 required=False,
             ),
         ],
-        datasets=[
-            NWBDatasetSpec(
-                name="rois",
-                doc="references rows of ROI table",
-                dtype="int8",
-                neurodata_type_inc="DynamicTableRegion",
-            ),
-        ],
     )
 
     HolographicSeries = NWBGroupSpec(
@@ -178,6 +170,12 @@ def main():
                 dtype="numeric",
                 shape=(None, None),
                 dims=("num_times", "num_rois"),
+            ),            
+            NWBDatasetSpec(
+                name="rois",
+                doc="references rows of ROI table",
+                dtype="int8",
+                neurodata_type_inc="DynamicTableRegion",
             ),
         ],
         links=[

@@ -113,7 +113,6 @@ class TestHolographicSeries(TestCase):
             excitation_lambda=self.stimulation_wavelenght,  # nm
             effector=self.effector,
             location=self.location,
-            rois=self.roi_table_region,
         )
         self.nwbfile.add_ogen_site(holo_stim_site)
 
@@ -132,6 +131,7 @@ class TestHolographicSeries(TestCase):
             stimulation_wavelenght=self.stimulation_wavelenght,
             stimulus_pattern=stimulus_pattern,
             site=holo_stim_site,
+            rois=self.roi_table_region,
             device=self.device,
         )
         assert_array_equal(holographic_stimulation.data, data)
@@ -166,7 +166,6 @@ class TestHolographicSeries(TestCase):
             excitation_lambda=self.stimulation_wavelenght,  # nm
             effector=self.effector,
             location=self.location,
-            rois=self.roi_table_region,
         )
         self.nwbfile.add_ogen_site(holo_stim_site)
 
@@ -182,6 +181,7 @@ class TestHolographicSeries(TestCase):
             stimulation_wavelenght=self.stimulation_wavelenght,
             stimulus_pattern=stimulus_pattern,
             site=holo_stim_site,
+            rois=self.roi_table_region,
             device=self.device,
         )
 
@@ -226,7 +226,6 @@ class TestHolographicSeries(TestCase):
             excitation_lambda=self.stimulation_wavelenght,  # nm
             effector=self.effector,
             location=self.location,
-            rois=self.roi_table_region,
         )
         self.nwbfile.add_ogen_site(holo_stim_site)
 
@@ -245,6 +244,7 @@ class TestHolographicSeries(TestCase):
             stimulation_wavelenght=self.stimulation_wavelenght,
             stimulus_pattern=stimulus_pattern,
             site=holo_stim_site,
+            rois=self.roi_table_region,
             device=self.device,
         )
         assert_array_equal(holographic_stimulation.data, data)
@@ -278,7 +278,6 @@ class TestHolographicSeries(TestCase):
             excitation_lambda=self.stimulation_wavelenght,  # nm
             effector=self.effector,
             location=self.location,
-            rois=self.roi_table_region,
         )
         self.nwbfile.add_ogen_site(holo_stim_site)
 
@@ -294,6 +293,7 @@ class TestHolographicSeries(TestCase):
             stimulation_wavelenght=self.stimulation_wavelenght,
             stimulus_pattern=stimulus_pattern,
             site=holo_stim_site,
+            rois=self.roi_table_region,
             device=self.device,
         )
 

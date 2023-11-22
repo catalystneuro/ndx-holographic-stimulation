@@ -70,11 +70,6 @@ groups:
     dtype: text
     doc: Light-activated effector protein expressed by the targeted cell (eg. ChR2)
     required: false
-  datasets:
-  - name: rois
-    neurodata_type_inc: DynamicTableRegion
-    dtype: int8
-    doc: references rows of ROI table
 - neurodata_type_def: HolographicSeries
   neurodata_type_inc: TimeSeries
   doc: An extension of OptogeneticSeries to include the holographic representation
@@ -99,6 +94,10 @@ groups:
     - null
     doc: The data values. The first dimension must be time. The second dimension represents
       ROIs
+  - name: rois
+    neurodata_type_inc: DynamicTableRegion
+    dtype: int8
+    doc: references rows of ROI table
   links:
   - name: site
     target_type: HolographicStimulusSite
