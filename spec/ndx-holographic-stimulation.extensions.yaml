@@ -3,52 +3,43 @@ groups:
   neurodata_type_inc: DynamicTable
   doc: table of parameters defining the spiral scanning beam pattern
   attributes:
-  - name: spiral_duration
-    dtype: float32
-    doc: time duration for a single spiral, in sec
-  - name: spiral_diameter
+  - name: diameter
     dtype: float32
     doc: spiral diameter of each spot, in m
-  - name: spiral_height
+  - name: height
     dtype: float32
     doc: spiral height of each spot, in m
-  - name: num_revolutions
+  - name: number_of_revolutions
     dtype: int8
     doc: number of turns within a spiral
-  - name: num_spirals
-    dtype: int8
-    doc: numbers of repetitions for each spiral
-  - name: isi_spiral
-    dtype: float32
-    doc: duration of the interval between each individual spiral, in sec
 - neurodata_type_def: TemporalFocusing
   neurodata_type_inc: DynamicTable
   doc: table of parameters defining the temporal focusing beam-shaping
   attributes:
-  - name: lateral_psf
+  - name: lateral_point_spread_function
     dtype: text
     doc: estimated lateral spatial profile or point spread function, expressed as
       mean [um] ± s.d [um]
-  - name: axial_psf
+  - name: axial_point_spread_function
     dtype: text
     doc: estimated axial spatial profile or point spread function, expressed as mean
       [um]± s.d [um]
-  - name: duration
-    dtype: float32
-    doc: the time duration for a single spot, in sec
-  - name: num_repetitions
-    dtype: int8
-    doc: numbers of repetitions for each spot
-  - name: isi
-    dtype: float32
-    doc: duration of the interval between each individual spot, in sec
-- neurodata_type_def: HolographicStimulusPattern
+- neurodata_type_def: OptogeneticStimulusPattern
   neurodata_type_inc: LabMetaData
   doc: Holographic excitation single ROI
   attributes:
   - name: description
     dtype: text
     doc: description of the stimulus pattern
+  - name: duration
+    dtype: float32
+    doc: the time duration for a single stimulus, in sec
+  - name: number_of_stimulus_presentation
+    dtype: int8
+    doc: number of times the patterned stimulus is presented in one stimulation interval
+  - name: inter_stimulus_interval
+    dtype: float32
+    doc: duration of the interval between each individual stimulus, in sec
   groups:
   - name: spiral_scanning
     neurodata_type_inc: SpiralScanning
@@ -61,7 +52,7 @@ groups:
       phases to generate custom-shaped light patterns that can illuminate extended
       lateral regions (e.g., the entire cell body) simultaneously.
     quantity: '?'
-- neurodata_type_def: HolographicStimulusSite
+- neurodata_type_def: PatternedOptogeneticStimulusSite
   neurodata_type_inc: OptogeneticStimulusSite
   doc: An extension of OptogeneticStimulusSite to include the geometrical representation
     for the stimulus.
@@ -70,24 +61,15 @@ groups:
     dtype: text
     doc: Light-activated effector protein expressed by the targeted cell (eg. ChR2)
     required: false
-  datasets:
-  - name: rois
-    neurodata_type_inc: DynamicTableRegion
-    dtype: int8
-    doc: references rows of ROI table
-- neurodata_type_def: HolographicSeries
+- neurodata_type_def: PatternedOptogeneticSeries
   neurodata_type_inc: TimeSeries
-  doc: An extension of OptogeneticSeries to include the holographic representation
-    for the stimulus.
+  doc: An extension of OptogeneticSeries to include the spatial patterns for the photostimulation.
   attributes:
   - name: unit
     dtype: text
     default_value: watts
     doc: SI unit of data
     required: false
-  - name: stimulation_wavelenght
-    dtype: float
-    doc: stimulation wavelenght in nm
   datasets:
   - name: data
     dtype: numeric
@@ -99,16 +81,60 @@ groups:
     - null
     doc: The data values. The first dimension must be time. The second dimension represents
       ROIs
+  - name: rois
+    neurodata_type_inc: DynamicTableRegion
+    dtype: int8
+    doc: references rows of ROI table
   links:
   - name: site
-    target_type: HolographicStimulusSite
-    doc: link to the holographic stimulus site
+    target_type: PatternedOptogeneticStimulusSite
+    doc: link to the patterned stimulus site
     quantity: '*'
   - name: stimulus_pattern
-    target_type: HolographicStimulusPattern
-    doc: link to the holographic stimulus pattern
-    quantity: '?'
+    target_type: OptogeneticStimulusPattern
+    doc: link to the stimulus pattern
+    quantity: '*'
   - name: device
     target_type: Device
-    doc: link to the device used for generate the photostimulation
-    quantity: '?'
+    doc: link to the device used to generate the photostimulation
+    quantity: '*'
+  - name: spatial_light_modulator
+    target_type: SpatialLightModulator
+    doc: link to the spatial light modulator device
+    quantity: '*'
+  - name: light_source
+    target_type: LightSource
+    doc: link to the light source
+    quantity: '*'
+- neurodata_type_def: SpatialLightModulator
+  neurodata_type_inc: Device
+  doc: An extension of Device to include the Spatial Light Modulator metadata
+  attributes:
+  - name: model
+    dtype: text
+    doc: model of the Spatial Light Modulator, if known
+  - name: resolution
+    dtype: float32
+    doc: resolution of the Spatial Light Modulator in um, if known
+- neurodata_type_def: LightSource
+  neurodata_type_inc: Device
+  doc: An extension of Device to include the Light Sorce metadata
+  attributes:
+  - name: stimulation_wavelenght
+    dtype: float32
+    doc: stimulation wavelenght in nm
+  - name: filter
+    dtype: text
+    doc: filter
+  - name: power
+    dtype: float32
+    doc: power of the stimulation in W, if known
+  - name: intensity
+    dtype: float32
+    doc: intensity of the excitation in W/m^2, if known.
+  - name: exposure_time
+    dtype: float32
+    doc: exposure time of the sample
+  - name: pulse_rate
+    dtype: float32
+    doc: pulse rate of the light source, if the light source is a pulsed laser

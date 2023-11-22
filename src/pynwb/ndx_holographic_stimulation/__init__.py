@@ -23,8 +23,10 @@ load_namespaces(ndx_holographic_stimulation_specpath)
 
 # TODO: import your classes here or define your class using get_class to make
 # them accessible at the package level
-HolographicSeries = get_class('HolographicSeries', 'ndx-holographic-stimulation')
-HolographicStimulusPattern = get_class('HolographicStimulusPattern', 'ndx-holographic-stimulation')
-HolographicStimulusSite = get_class('HolographicStimulusSite', 'ndx-holographic-stimulation')
+PatternedOptogeneticSeries = get_class('PatternedOptogeneticSeries', 'ndx-holographic-stimulation')
+OptogeneticStimulusPattern = get_class('OptogeneticStimulusPattern', 'ndx-holographic-stimulation')
+PatternedOptogeneticStimulusSite = get_class('PatternedOptogeneticStimulusSite', 'ndx-holographic-stimulation')
 SpiralScanning = get_class('SpiralScanning', 'ndx-holographic-stimulation')
 TemporalFocusing = get_class('TemporalFocusing', 'ndx-holographic-stimulation')
+SpatialLightModulator = get_class('SpatialLightModulator', 'ndx-holographic-stimulation')
+LightSource = get_class('LightSource', 'ndx-holographic-stimulation')
