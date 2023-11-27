@@ -17,7 +17,6 @@ from ndx_holographic_stimulation import (
     SpatialLightModulator,
     LightSource,
 )
-from pynwb.ophys import ImageSegmentation, OpticalChannel
 from hdmf.testing import TestCase
 from numpy.testing import assert_array_equal
 from pathlib import Path
@@ -100,24 +99,21 @@ class TestPatternedOptogeneticSeries(TestCase):
 
     def test_patterned_optogenetic_series_constructor_with_spiralscanning(self):
         spiral_scanning = SpiralScanning(
-            name=self.pattern_name,
+            name=self.spiral_scanning_name,
             diameter=self.spiral_diameter,
             height=self.spiral_height,
             number_of_revolutions=self.num_revolutions,
             description=self.pattern_description,
-        )
-        stimulus_pattern = OptogeneticStimulusPattern(
-            name=self.pattern_name,
-            description=self.pattern_description,
             duration=self.duration,
             number_of_stimulus_presentation=self.number_of_stimulus_presentation,
             inter_stimulus_interval=self.inter_stimulus_interval,
-            spiral_scanning=spiral_scanning,
-        )
-        self.nwbfile.add_lab_meta_data(stimulus_pattern)
 
-        assert stimulus_pattern.name in self.nwbfile.lab_meta_data.keys()
-        assert stimulus_pattern in self.nwbfile.lab_meta_data.values()
+        )
+
+        self.nwbfile.add_lab_meta_data(spiral_scanning)
+
+        assert spiral_scanning.name in self.nwbfile.lab_meta_data.keys()
+        assert spiral_scanning in self.nwbfile.lab_meta_data.values()
 
         stim_site = PatternedOptogeneticStimulusSite(
             name=self.site_name,
@@ -161,7 +157,7 @@ class TestPatternedOptogeneticSeries(TestCase):
             unit=self.unit,
             timestamps=timestamps,
             rois=self.roi_table_region,
-            stimulus_pattern=stimulus_pattern,
+            stimulus_pattern=spiral_scanning,
             site=stim_site,
             device=self.device,
             light_source=light_source,
@@ -176,24 +172,19 @@ class TestPatternedOptogeneticSeries(TestCase):
 
     def test_patterned_optogenetic_series_roundtrip_with_spiralscanning(self):
         spiral_scanning = SpiralScanning(
-            name=self.pattern_name,
+            name=self.spiral_scanning_name,
             diameter=self.spiral_diameter,
             height=self.spiral_height,
             number_of_revolutions=self.num_revolutions,
             description=self.pattern_description,
-        )
-        stimulus_pattern = OptogeneticStimulusPattern(
-            name=self.pattern_name,
-            description=self.pattern_description,
             duration=self.duration,
             number_of_stimulus_presentation=self.number_of_stimulus_presentation,
             inter_stimulus_interval=self.inter_stimulus_interval,
-            spiral_scanning=spiral_scanning,
         )
-        self.nwbfile.add_lab_meta_data(stimulus_pattern)
+        self.nwbfile.add_lab_meta_data(spiral_scanning)
 
-        assert stimulus_pattern.name in self.nwbfile.lab_meta_data.keys()
-        assert stimulus_pattern in self.nwbfile.lab_meta_data.values()
+        assert spiral_scanning.name in self.nwbfile.lab_meta_data.keys()
+        assert spiral_scanning in self.nwbfile.lab_meta_data.values()
 
         stim_site = PatternedOptogeneticStimulusSite(
             name=self.site_name,
@@ -238,7 +229,7 @@ class TestPatternedOptogeneticSeries(TestCase):
             unit=self.unit,
             timestamps=timestamps,
             rois=self.roi_table_region,
-            stimulus_pattern=stimulus_pattern,
+            stimulus_pattern=spiral_scanning,
             site=stim_site,
             device=self.device,
             light_source=light_source,
@@ -257,7 +248,7 @@ class TestPatternedOptogeneticSeries(TestCase):
             assert_array_equal(nwbfile_in.stimulus[self.series_name].data, data)
 
             assert self.site_name in nwbfile_in.ogen_sites.keys()
-            assert self.pattern_name in nwbfile_in.lab_meta_data.keys()
+            assert self.spiral_scanning_name in nwbfile_in.lab_meta_data.keys()
 
     def test_patterned_optogenetic_series_constructor_with_temporalfocusing(self):
         temporal_focusing = TemporalFocusing(
@@ -265,19 +256,14 @@ class TestPatternedOptogeneticSeries(TestCase):
             description=self.pattern_description,
             lateral_point_spread_function=self.lateral_psf,
             axial_point_spread_function=self.axial_psf,
-        )
-        stimulus_pattern = OptogeneticStimulusPattern(
-            name=self.pattern_name,
-            description=self.pattern_description,
             duration=self.duration,
             number_of_stimulus_presentation=self.number_of_stimulus_presentation,
             inter_stimulus_interval=self.inter_stimulus_interval,
-            temporal_focusing=temporal_focusing,
         )
-        self.nwbfile.add_lab_meta_data(stimulus_pattern)
+        self.nwbfile.add_lab_meta_data(temporal_focusing)
 
-        assert stimulus_pattern.name in self.nwbfile.lab_meta_data.keys()
-        assert stimulus_pattern in self.nwbfile.lab_meta_data.values()
+        assert temporal_focusing.name in self.nwbfile.lab_meta_data.keys()
+        assert temporal_focusing in self.nwbfile.lab_meta_data.values()
 
         stim_site = PatternedOptogeneticStimulusSite(
             name=self.site_name,
@@ -322,7 +308,7 @@ class TestPatternedOptogeneticSeries(TestCase):
             unit=self.unit,
             timestamps=timestamps,
             rois=self.roi_table_region,
-            stimulus_pattern=stimulus_pattern,
+            stimulus_pattern=temporal_focusing,
             site=stim_site,
             device=self.device,
             light_source=light_source,
@@ -342,19 +328,14 @@ class TestPatternedOptogeneticSeries(TestCase):
             description=self.pattern_description,
             lateral_point_spread_function=self.lateral_psf,
             axial_point_spread_function=self.axial_psf,
-        )
-        stimulus_pattern = OptogeneticStimulusPattern(
-            name=self.pattern_name,
-            description=self.pattern_description,
             duration=self.duration,
             number_of_stimulus_presentation=self.number_of_stimulus_presentation,
             inter_stimulus_interval=self.inter_stimulus_interval,
-            temporal_focusing=temporal_focusing,
         )
-        self.nwbfile.add_lab_meta_data(stimulus_pattern)
+        self.nwbfile.add_lab_meta_data(temporal_focusing)
 
-        assert stimulus_pattern.name in self.nwbfile.lab_meta_data.keys()
-        assert stimulus_pattern in self.nwbfile.lab_meta_data.values()
+        assert temporal_focusing.name in self.nwbfile.lab_meta_data.keys()
+        assert temporal_focusing in self.nwbfile.lab_meta_data.values()
 
         stim_site = PatternedOptogeneticStimulusSite(
             name=self.site_name,
@@ -399,7 +380,7 @@ class TestPatternedOptogeneticSeries(TestCase):
             unit=self.unit,
             timestamps=timestamps,
             rois=self.roi_table_region,
-            stimulus_pattern=stimulus_pattern,
+            stimulus_pattern=temporal_focusing,
             site=stim_site,
             device=self.device,
             light_source=light_source,
@@ -418,4 +399,4 @@ class TestPatternedOptogeneticSeries(TestCase):
             assert_array_equal(nwbfile_in.stimulus[self.series_name].data, data)
 
             assert self.site_name in nwbfile_in.ogen_sites.keys()
-            assert self.pattern_name in nwbfile_in.lab_meta_data.keys()
+            assert self.temporal_focusing_name in nwbfile_in.lab_meta_data.keys()

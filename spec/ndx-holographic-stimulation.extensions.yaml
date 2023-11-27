@@ -1,29 +1,4 @@
 groups:
-- neurodata_type_def: SpiralScanning
-  neurodata_type_inc: DynamicTable
-  doc: table of parameters defining the spiral scanning beam pattern
-  attributes:
-  - name: diameter
-    dtype: float32
-    doc: spiral diameter of each spot, in m
-  - name: height
-    dtype: float32
-    doc: spiral height of each spot, in m
-  - name: number_of_revolutions
-    dtype: int8
-    doc: number of turns within a spiral
-- neurodata_type_def: TemporalFocusing
-  neurodata_type_inc: DynamicTable
-  doc: table of parameters defining the temporal focusing beam-shaping
-  attributes:
-  - name: lateral_point_spread_function
-    dtype: text
-    doc: estimated lateral spatial profile or point spread function, expressed as
-      mean [um] ± s.d [um]
-  - name: axial_point_spread_function
-    dtype: text
-    doc: estimated axial spatial profile or point spread function, expressed as mean
-      [um]± s.d [um]
 - neurodata_type_def: OptogeneticStimulusPattern
   neurodata_type_inc: LabMetaData
   doc: Holographic excitation single ROI
@@ -40,18 +15,31 @@ groups:
   - name: inter_stimulus_interval
     dtype: float32
     doc: duration of the interval between each individual stimulus, in sec
-  groups:
-  - name: spiral_scanning
-    neurodata_type_inc: SpiralScanning
-    doc: 'The spiral scanning beam pattern is obtained by scanning the beam spot following
-      a spiral path over the somatic membrane '
-    quantity: '?'
-  - name: temporal_focusing
-    neurodata_type_inc: TemporalFocusing
-    doc: The temporal focusing beam-shaping is accomplished by manipulating light
-      phases to generate custom-shaped light patterns that can illuminate extended
-      lateral regions (e.g., the entire cell body) simultaneously.
-    quantity: '?'
+- neurodata_type_def: SpiralScanning
+  neurodata_type_inc: OptogeneticStimulusPattern
+  doc: table of parameters defining the spiral scanning beam pattern
+  attributes:
+  - name: diameter
+    dtype: float32
+    doc: spiral diameter of each spot, in m
+  - name: height
+    dtype: float32
+    doc: spiral height of each spot, in m
+  - name: number_of_revolutions
+    dtype: int8
+    doc: number of turns within a spiral
+- neurodata_type_def: TemporalFocusing
+  neurodata_type_inc: OptogeneticStimulusPattern
+  doc: table of parameters defining the temporal focusing beam-shaping
+  attributes:
+  - name: lateral_point_spread_function
+    dtype: text
+    doc: estimated lateral spatial profile or point spread function, expressed as
+      mean [um] ± s.d [um]
+  - name: axial_point_spread_function
+    dtype: text
+    doc: estimated axial spatial profile or point spread function, expressed as mean
+      [um]± s.d [um]
 - neurodata_type_def: PatternedOptogeneticStimulusSite
   neurodata_type_inc: OptogeneticStimulusSite
   doc: An extension of OptogeneticStimulusSite to include the geometrical representation
