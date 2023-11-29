@@ -77,23 +77,26 @@ groups:
   - name: site
     target_type: PatternedOptogeneticStimulusSite
     doc: link to the patterned stimulus site
-    quantity: '*'
+    quantity: '?'
   - name: stimulus_pattern
     target_type: OptogeneticStimulusPattern
     doc: link to the stimulus pattern
-    quantity: '*'
+    quantity: '?'
+    required: false
   - name: device
     target_type: Device
     doc: link to the device used to generate the photostimulation
-    quantity: '*'
+    quantity: '?'
   - name: spatial_light_modulator
     target_type: SpatialLightModulator
     doc: link to the spatial light modulator device
-    quantity: '*'
+    quantity: '?'
+    required: false
   - name: light_source
     target_type: LightSource
     doc: link to the light source
-    quantity: '*'
+    quantity: '?'
+    required: false
 - neurodata_type_def: SpatialLightModulator
   neurodata_type_inc: Device
   doc: An extension of Device to include the Spatial Light Modulator metadata
@@ -101,9 +104,11 @@ groups:
   - name: model
     dtype: text
     doc: model of the Spatial Light Modulator, if known
+    required: false
   - name: resolution
     dtype: float32
     doc: resolution of the Spatial Light Modulator in um, if known
+    required: false
 - neurodata_type_def: LightSource
   neurodata_type_inc: Device
   doc: An extension of Device to include the Light Sorce metadata
@@ -114,15 +119,19 @@ groups:
   - name: filter
     dtype: text
     doc: filter
+    required: false
   - name: power
     dtype: float32
     doc: power of the stimulation in W, if known
   - name: intensity
     dtype: float32
     doc: intensity of the excitation in W/m^2, if known.
+    required: false
   - name: exposure_time
     dtype: float32
     doc: exposure time of the sample
+    required: false
   - name: pulse_rate
     dtype: float32
     doc: pulse rate of the light source, if the light source is a pulsed laser
+    required: false

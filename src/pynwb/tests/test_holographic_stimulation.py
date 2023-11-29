@@ -33,7 +33,7 @@ class TestPatternedOptogeneticSeries(TestCase):
 
     def setUp(self) -> None:
         self.nwbfile = mock_NWBFile(session_start_time=self.session_start_time)
-        self.device = mock_Device(nwbfile=self.nwbfile)
+        self.device = mock_Device(name="device",nwbfile=self.nwbfile)
         self.optical_channel = mock_OpticalChannel(nwbfile=self.nwbfile)
         self.imaging_plane = mock_ImagingPlane(
             optical_channel=self.optical_channel,
@@ -53,32 +53,32 @@ class TestPatternedOptogeneticSeries(TestCase):
         self.series_description = "Patterned stimulus on 2 rois"
         self.unit = "watts"
         # metadata for Patterned stimulus site
-        self.site_name = "StimulusSite"
+        self.site_name = "site"
         self.site_description = "This is an example Patterned site."
         self.effector = "ChR2"
         self.location = "VISrl"
         # metadata for  stimulus pattern
-        self.pattern_name = "StimulusPattern"
+        self.pattern_name = "stimulus_pattern"
         self.pattern_description = "beam pattern"
         self.duration = 10e-3
         self.number_of_stimulus_presentation = 10
         self.inter_stimulus_interval = 0.02
         # metadata for spiral scanning pattern
-        self.spiral_scanning_name = "SpiralScanning"
+        self.spiral_scanning_name = "stimulus_pattern"
         self.spiral_diameter = 15e-6
         self.spiral_height = 10e-6
         self.num_revolutions = 5
         # metadata for temporal focusing pattern
-        self.temporal_focusing_name = "TemporalFocusing"
+        self.temporal_focusing_name = "stimulus_pattern"
         self.lateral_psf = "9e-6 m ± 0.7e-6 m"
         self.axial_psf = "32e-6 m ± 1.6e-6 m"
         # metadata for spiatial light modulator
-        self.slm_name = "SpatialLightModulator"
+        self.slm_name = "spatial_light_modulator"
         self.slm_description = "Generic description for the slm"
         self.slm_model = "model"
         self.slm_resolution = 1.
         # metadata for the light source
-        self.light_source_name = "Generic Laser"
+        self.light_source_name = "light_source"
         self.light_source_description = "Generic description for the laser"
         self.light_source_manifacturer = "manifacturer"
         self.stimulation_wavelenght = 600.0
