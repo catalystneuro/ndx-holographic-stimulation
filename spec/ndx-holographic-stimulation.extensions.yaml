@@ -77,25 +77,20 @@ groups:
   - name: site
     target_type: PatternedOptogeneticStimulusSite
     doc: link to the patterned stimulus site
-    quantity: '?'
   - name: stimulus_pattern
     target_type: OptogeneticStimulusPattern
     doc: link to the stimulus pattern
-    quantity: '?'
     required: false
   - name: device
     target_type: Device
     doc: link to the device used to generate the photostimulation
-    quantity: '?'
   - name: spatial_light_modulator
     target_type: SpatialLightModulator
     doc: link to the spatial light modulator device
-    quantity: '?'
     required: false
   - name: light_source
     target_type: LightSource
     doc: link to the light source
-    quantity: '?'
     required: false
 - neurodata_type_def: SpatialLightModulator
   neurodata_type_inc: Device
