@@ -161,8 +161,8 @@ def main():
                 dtype="float32",
             ),
             NWBAttributeSpec(
-                name="filter",
-                doc="filter", #TODO write a better doc
+                name="filter_description",
+                doc="filter_description", #TODO write a better doc
                 dtype="text",
             ),
             NWBAttributeSpec(

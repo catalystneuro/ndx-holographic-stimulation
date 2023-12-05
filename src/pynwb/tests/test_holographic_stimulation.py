@@ -82,7 +82,7 @@ class TestPatternedOptogeneticSeries(TestCase):
         self.light_source_description = "Generic description for the laser"
         self.light_source_manifacturer = "manifacturer"
         self.stimulation_wavelength = 600.0
-        self.filter = "600/50"
+        self.filter_description = "600/50"
         self.power = 8.
         self.intensity = 100. 
         self.exposure_time = 1e-6
@@ -139,7 +139,7 @@ class TestPatternedOptogeneticSeries(TestCase):
             name=self.light_source_name,
             stimulation_wavelength=self.stimulation_wavelength,  # nm
             description=self.light_source_description,
-            filter=self.filter,
+            filter_description=self.filter_description,
             power=self.power,
             intensity=self.intensity,
             exposure_time=self.exposure_time,
@@ -211,7 +211,7 @@ class TestPatternedOptogeneticSeries(TestCase):
             name=self.light_source_name,
             stimulation_wavelength=self.stimulation_wavelength,  # nm
             description=self.light_source_description,
-            filter=self.filter,
+            filter_description=self.filter_description,
             power=self.power,
             intensity=self.intensity,
             exposure_time=self.exposure_time,
@@ -290,7 +290,7 @@ class TestPatternedOptogeneticSeries(TestCase):
             name=self.light_source_name,
             stimulation_wavelength=self.stimulation_wavelength,  # nm
             description=self.light_source_description,
-            filter=self.filter,
+            filter_description=self.filter_description,
             power=self.power,
             intensity=self.intensity,
             exposure_time=self.exposure_time,
@@ -362,7 +362,7 @@ class TestPatternedOptogeneticSeries(TestCase):
             name=self.light_source_name,
             stimulation_wavelength=self.stimulation_wavelength,  # nm
             description=self.light_source_description,
-            filter=self.filter,
+            filter_description=self.filter_description,
             power=self.power,
             intensity=self.intensity,
             exposure_time=self.exposure_time,

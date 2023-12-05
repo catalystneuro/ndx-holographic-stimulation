@@ -111,9 +111,9 @@ groups:
   - name: stimulation_wavelength
     dtype: float32
     doc: stimulation wavelength in nm
-  - name: filter
+  - name: filter_description
     dtype: text
-    doc: filter
+    doc: filter_description
     required: false
   - name: power
     dtype: float32
