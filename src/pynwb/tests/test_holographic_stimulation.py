@@ -155,11 +155,9 @@ class TestPatternedOptogeneticSeries(TestCase):
 
         assert_array_equal(stimulus_pattern_table[0], generic_pattern)
 
-
-        return stimulus_pattern_table,stimulus_pattern_ids
+        return stimulus_pattern_table, stimulus_pattern_ids
 
     def test_patterned_optogenetic_series_constructor(self):
-
         stimulus_pattern_table, stimulus_pattern_ids = self.create_ogen_pattern_table()
 
         stim_site = PatternedOptogeneticStimulusSite(
@@ -219,7 +217,6 @@ class TestPatternedOptogeneticSeries(TestCase):
         assert photostimulation in self.nwbfile.stimulus.values()
 
     def test_patterned_optogenetic_series_roundtrip(self):
-
         stimulus_pattern_table, stimulus_pattern_ids = self.create_ogen_pattern_table()
 
         stim_site = PatternedOptogeneticStimulusSite(
@@ -272,7 +269,7 @@ class TestPatternedOptogeneticSeries(TestCase):
             light_source=light_source,
             spatial_light_modulator=spatial_light_modulator,
         )
-        
+
         self.nwbfile.add_stimulus(photostimulation)
 
         nwbfile_path = self.test_dir / "test_photostimulation_nwb.nwb"
@@ -286,3 +283,5 @@ class TestPatternedOptogeneticSeries(TestCase):
 
             assert self.site_name in nwbfile_in.ogen_sites.keys()
             assert self.temporal_focusing_name in nwbfile_in.lab_meta_data.keys()
+            assert self.spiral_scanning_name in nwbfile_in.lab_meta_data.keys()
+            assert self.pattern_name in nwbfile_in.lab_meta_data.keys()
