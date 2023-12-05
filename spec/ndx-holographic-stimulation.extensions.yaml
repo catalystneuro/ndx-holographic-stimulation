@@ -1,7 +1,7 @@
 groups:
 - neurodata_type_def: OptogeneticStimulusPattern
   neurodata_type_inc: LabMetaData
-  doc: Holographic excitation single ROI
+  doc: parameters defining a generic optogenetic stimulus patter
   attributes:
   - name: description
     dtype: text
@@ -17,7 +17,7 @@ groups:
     doc: duration of the interval between each individual stimulus, in sec
 - neurodata_type_def: SpiralScanning
   neurodata_type_inc: OptogeneticStimulusPattern
-  doc: table of parameters defining the spiral scanning beam pattern
+  doc: parameters defining the spiral scanning beam pattern
   attributes:
   - name: diameter
     dtype: float32
@@ -30,7 +30,7 @@ groups:
     doc: number of turns within a spiral
 - neurodata_type_def: TemporalFocusing
   neurodata_type_inc: OptogeneticStimulusPattern
-  doc: table of parameters defining the temporal focusing beam-shaping
+  doc: parameters defining the temporal focusing beam-shaping
   attributes:
   - name: lateral_point_spread_function
     dtype: text
@@ -40,6 +40,18 @@ groups:
     dtype: text
     doc: estimated axial spatial profile or point spread function, expressed as mean
       [um]± s.d [um]
+- neurodata_type_def: OptogeneticStimulusPatternTable
+  neurodata_type_inc: DynamicTable
+  doc: Table for storing optogenetic stimulus pattern related metadata.
+  datasets:
+  - name: stimulus_pattern
+    neurodata_type_inc: VectorData
+    dtype:
+      target_type: OptogeneticStimulusPattern
+      reftype: object
+    doc: Column for storing the reference to the optogenetic stimulus pattern.
+    shape:
+    - null
 - neurodata_type_def: PatternedOptogeneticStimulusSite
   neurodata_type_inc: OptogeneticStimulusSite
   doc: An extension of OptogeneticStimulusSite to include the geometrical representation
@@ -52,12 +64,6 @@ groups:
 - neurodata_type_def: PatternedOptogeneticSeries
   neurodata_type_inc: TimeSeries
   doc: An extension of OptogeneticSeries to include the spatial patterns for the photostimulation.
-  attributes:
-  - name: unit
-    dtype: text
-    default_value: watts
-    doc: SI unit of data
-    required: false
   datasets:
   - name: data
     dtype: numeric
@@ -69,18 +75,33 @@ groups:
     - null
     doc: The data values. The first dimension must be time. The second dimension represents
       ROIs
+    attributes:
+    - name: unit
+      dtype: text
+      default_value: watts
+      doc: SI unit of data
+      required: false
   - name: rois
     neurodata_type_inc: DynamicTableRegion
     dtype: int8
     doc: references rows of ROI table
+  - name: stimulus_pattern_ids
+    dtype: uint32
+    dims:
+    - num_times
+    - num_rois
+    shape:
+    - null
+    - null
+    doc: Index of the stimulus pattern (using zero-indexing) in the linked OptogeneticStimulusPatternTable object.
+  groups:
+  - name: stimulus_pattern_table
+    neurodata_type_inc: OptogeneticStimulusPatternTable
+    doc: link to the stimulus pattern table
   links:
   - name: site
     target_type: PatternedOptogeneticStimulusSite
     doc: link to the patterned stimulus site
-  - name: stimulus_pattern
-    target_type: OptogeneticStimulusPattern
-    doc: link to the stimulus pattern
-    required: false
   - name: device
     target_type: Device
     doc: link to the device used to generate the photostimulation

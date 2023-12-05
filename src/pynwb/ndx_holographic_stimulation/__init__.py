@@ -24,6 +24,7 @@ load_namespaces(ndx_holographic_stimulation_specpath)
 # TODO: import your classes here or define your class using get_class to make
 # them accessible at the package level
 PatternedOptogeneticSeries = get_class('PatternedOptogeneticSeries', 'ndx-holographic-stimulation')
+OptogeneticStimulusPatternTable = get_class('OptogeneticStimulusPatternTable', 'ndx-holographic-stimulation')
 OptogeneticStimulusPattern = get_class('OptogeneticStimulusPattern', 'ndx-holographic-stimulation')
 PatternedOptogeneticStimulusSite = get_class('PatternedOptogeneticStimulusSite', 'ndx-holographic-stimulation')
 SpiralScanning = get_class('SpiralScanning', 'ndx-holographic-stimulation')
