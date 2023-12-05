@@ -81,7 +81,7 @@ class TestPatternedOptogeneticSeries(TestCase):
         self.light_source_name = "light_source"
         self.light_source_description = "Generic description for the laser"
         self.light_source_manifacturer = "manifacturer"
-        self.stimulation_wavelenght = 600.0
+        self.stimulation_wavelength = 600.0
         self.filter = "600/50"
         self.power = 8.
         self.intensity = 100. 
@@ -119,7 +119,7 @@ class TestPatternedOptogeneticSeries(TestCase):
             name=self.site_name,
             device=self.device,
             description=self.site_description,
-            excitation_lambda=self.stimulation_wavelenght,  # nm
+            excitation_lambda=self.stimulation_wavelength,  # nm
             effector=self.effector,
             location=self.location,
         )
@@ -137,7 +137,7 @@ class TestPatternedOptogeneticSeries(TestCase):
         self.nwbfile.add_device(spatial_light_modulator)
         light_source = LightSource(
             name=self.light_source_name,
-            stimulation_wavelenght=self.stimulation_wavelenght,  # nm
+            stimulation_wavelength=self.stimulation_wavelength,  # nm
             description=self.light_source_description,
             filter=self.filter,
             power=self.power,
@@ -190,7 +190,7 @@ class TestPatternedOptogeneticSeries(TestCase):
             name=self.site_name,
             device=self.device,
             description=self.site_description,
-            excitation_lambda=self.stimulation_wavelenght,  # nm
+            excitation_lambda=self.stimulation_wavelength,  # nm
             effector=self.effector,
             location=self.location,
         )
@@ -209,7 +209,7 @@ class TestPatternedOptogeneticSeries(TestCase):
 
         light_source = LightSource(
             name=self.light_source_name,
-            stimulation_wavelenght=self.stimulation_wavelenght,  # nm
+            stimulation_wavelength=self.stimulation_wavelength,  # nm
             description=self.light_source_description,
             filter=self.filter,
             power=self.power,
@@ -269,7 +269,7 @@ class TestPatternedOptogeneticSeries(TestCase):
             name=self.site_name,
             device=self.device,
             description=self.site_description,
-            excitation_lambda=self.stimulation_wavelenght,  # nm
+            excitation_lambda=self.stimulation_wavelength,  # nm
             effector=self.effector,
             location=self.location,
         )
@@ -288,7 +288,7 @@ class TestPatternedOptogeneticSeries(TestCase):
 
         light_source = LightSource(
             name=self.light_source_name,
-            stimulation_wavelenght=self.stimulation_wavelenght,  # nm
+            stimulation_wavelength=self.stimulation_wavelength,  # nm
             description=self.light_source_description,
             filter=self.filter,
             power=self.power,
@@ -341,7 +341,7 @@ class TestPatternedOptogeneticSeries(TestCase):
             name=self.site_name,
             device=self.device,
             description=self.site_description,
-            excitation_lambda=self.stimulation_wavelenght,  # nm
+            excitation_lambda=self.stimulation_wavelength,  # nm
             effector=self.effector,
             location=self.location,
         )
@@ -360,7 +360,7 @@ class TestPatternedOptogeneticSeries(TestCase):
 
         light_source = LightSource(
             name=self.light_source_name,
-            stimulation_wavelenght=self.stimulation_wavelenght,  # nm
+            stimulation_wavelength=self.stimulation_wavelength,  # nm
             description=self.light_source_description,
             filter=self.filter,
             power=self.power,

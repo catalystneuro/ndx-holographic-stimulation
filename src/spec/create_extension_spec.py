@@ -156,8 +156,8 @@ def main():
         ),
         attributes=[
             NWBAttributeSpec(
-                name="stimulation_wavelenght",
-                doc="stimulation wavelenght in nm",
+                name="stimulation_wavelength",
+                doc="stimulation wavelength in nm",
                 dtype="float32",
             ),
             NWBAttributeSpec(

@@ -108,9 +108,9 @@ groups:
   neurodata_type_inc: Device
   doc: An extension of Device to include the Light Sorce metadata
   attributes:
-  - name: stimulation_wavelenght
+  - name: stimulation_wavelength
     dtype: float32
-    doc: stimulation wavelenght in nm
+    doc: stimulation wavelength in nm
   - name: filter
     dtype: text
     doc: filter
