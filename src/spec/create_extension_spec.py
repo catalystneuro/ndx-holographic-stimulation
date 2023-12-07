@@ -26,47 +26,6 @@ def main():
     ns_builder.include_type("DynamicTable", namespace="hdmf-common")
     ns_builder.include_type("LabMetaData", namespace="core")
 
-    SpiralScanning = NWBGroupSpec(
-        neurodata_type_def="SpiralScanning",
-        neurodata_type_inc="DynamicTable",
-        doc=("table of parameters defining the spiral scanning beam pattern"),
-        attributes=[
-            NWBAttributeSpec(
-                name="diameter",
-                doc="spiral diameter of each spot, in m",
-                dtype="float32",
-            ),
-            NWBAttributeSpec(
-                name="height",
-                doc="spiral height of each spot, in m",
-                dtype="float32",
-            ),
-            NWBAttributeSpec(
-                name="number_of_revolutions",
-                doc="number of turns within a spiral",
-                dtype="int8",
-            ),
-        ],
-    )
-
-    TemporalFocusing = NWBGroupSpec(
-        neurodata_type_def="TemporalFocusing",
-        neurodata_type_inc="DynamicTable",
-        doc=("table of parameters defining the temporal focusing beam-shaping"),
-        attributes=[
-            NWBAttributeSpec(
-                name="lateral_point_spread_function",
-                doc="estimated lateral spatial profile or point spread function, expressed as mean [um] ± s.d [um]",
-                dtype="text",
-            ),
-            NWBAttributeSpec(
-                name="axial_point_spread_function",
-                doc="estimated axial spatial profile or point spread function, expressed as mean [um]± s.d [um]",
-                dtype="text",
-            ),
-        ],
-    )
-
     OptogeneticStimulusPattern = NWBGroupSpec(
         neurodata_type_def="OptogeneticStimulusPattern",
         neurodata_type_inc="LabMetaData",
@@ -93,20 +52,6 @@ def main():
                 dtype="float32",
             ),
         ],
-        groups=[
-            NWBGroupSpec(
-                name="spiral_scanning",
-                neurodata_type_inc="SpiralScanning",
-                doc="The spiral scanning beam pattern is obtained by scanning the beam spot following a spiral path over the somatic membrane ",
-                quantity="?",
-            ),
-            NWBGroupSpec(
-                name="temporal_focusing",
-                neurodata_type_inc="TemporalFocusing",
-                doc="The temporal focusing beam-shaping is accomplished by manipulating light phases to generate custom-shaped light patterns that can illuminate extended lateral regions (e.g., the entire cell body) simultaneously.",
-                quantity="?",
-            ),
-        ]
     )
 
 
@@ -195,14 +140,6 @@ def main():
             "An extension of OptogeneticSeries to include the spatial patterns for "
             "the photostimulation."
         ),
-        attributes=[
-            NWBAttributeSpec(
-                name="unit",
-                doc="SI unit of data",
-                dtype="text",
-                default_value="watts",
-            ),
-        ],
         datasets=[
             NWBDatasetSpec(
                 name="data",
@@ -212,6 +149,14 @@ def main():
                 dtype="numeric",
                 shape=(None, None),
                 dims=("num_times", "num_rois"),
+                attributes=[
+                    NWBAttributeSpec(
+                        name="unit",
+                        doc="SI unit of data",
+                        dtype="text",
+                        default_value="watts",
+                    ),
+                ]
             ),
             NWBDatasetSpec(
                 name="rois",
@@ -219,45 +164,42 @@ def main():
                 dtype="int8",
                 neurodata_type_inc="DynamicTableRegion",
             ),
+            NWBDatasetSpec(
+                name="stimulus_pattern_indexes",
+                doc=(
+                    "reference rows of the optogenetic stimulus pattern table. The first dimension must be time. The second dimension represents ROIs"
+                ),
+                dtype="int8",
+                shape=(None, None),
+                dims=("num_times", "num_rois"),
+            )
         ],
         links=[
             NWBLinkSpec(
                 name="site",
                 doc="link to the patterned stimulus site",
                 target_type="PatternedOptogeneticStimulusSite",
-                quantity="*",
-            ),
-            NWBLinkSpec(
-                name="stimulus_pattern",
-                doc="link to the stimulus pattern",
-                target_type="OptogeneticStimulusPattern",
-                quantity="*",
             ),
             NWBLinkSpec(
                 name="device",
                 doc="link to the device used to generate the photostimulation",
                 target_type="Device",
-                quantity="*",
             ),
             NWBLinkSpec(
                 name="spatial_light_modulator",
                 doc="link to the spatial light modulator device",
                 target_type="SpatialLightModulator",
-                quantity="*",
             ),
             NWBLinkSpec(
                 name="light_source",
                 doc="link to the light source",
                 target_type="LightSource",
-                quantity="*",
             ),
         ],
     )
 
     # TODO: add all of your new data types to this list
     new_data_types = [
-        SpiralScanning,
-        TemporalFocusing,
         OptogeneticStimulusPattern,
         PatternedOptogeneticStimulusSite,
         PatternedOptogeneticSeries,
