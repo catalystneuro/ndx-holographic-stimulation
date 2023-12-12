@@ -115,9 +115,10 @@ groups:
     dtype: text
     doc: filter_description
     required: false
-  - name: power
+  - name: peak_power
     dtype: float32
-    doc: power of the stimulation in W, if known
+    doc: peak power of the stimulation in W, if known
+    required: false
   - name: intensity
     dtype: float32
     doc: intensity of the excitation in W/m^2, if known.

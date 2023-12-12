@@ -83,7 +83,7 @@ class TestPatternedOptogeneticSeries(TestCase):
         self.light_source_manifacturer = "manifacturer"
         self.stimulation_wavelength = 600.0
         self.filter_description = "600/50"
-        self.power = 8.
+        self.peak_power = 8.
         self.intensity = 100. 
         self.exposure_time = 1e-6
         self.pulse_rate = 1/self.exposure_time 
@@ -140,7 +140,7 @@ class TestPatternedOptogeneticSeries(TestCase):
             stimulation_wavelength=self.stimulation_wavelength,  # nm
             description=self.light_source_description,
             filter_description=self.filter_description,
-            power=self.power,
+            peak_power=self.peak_power,
             intensity=self.intensity,
             exposure_time=self.exposure_time,
             pulse_rate=self.pulse_rate,
@@ -212,7 +212,7 @@ class TestPatternedOptogeneticSeries(TestCase):
             stimulation_wavelength=self.stimulation_wavelength,  # nm
             description=self.light_source_description,
             filter_description=self.filter_description,
-            power=self.power,
+            peak_power=self.peak_power,
             intensity=self.intensity,
             exposure_time=self.exposure_time,
             pulse_rate=self.pulse_rate,
@@ -291,7 +291,7 @@ class TestPatternedOptogeneticSeries(TestCase):
             stimulation_wavelength=self.stimulation_wavelength,  # nm
             description=self.light_source_description,
             filter_description=self.filter_description,
-            power=self.power,
+            peak_power=self.peak_power,
             intensity=self.intensity,
             exposure_time=self.exposure_time,
             pulse_rate=self.pulse_rate,
@@ -363,7 +363,7 @@ class TestPatternedOptogeneticSeries(TestCase):
             stimulation_wavelength=self.stimulation_wavelength,  # nm
             description=self.light_source_description,
             filter_description=self.filter_description,
-            power=self.power,
+            peak_power=self.peak_power,
             intensity=self.intensity,
             exposure_time=self.exposure_time,
             pulse_rate=self.pulse_rate,
