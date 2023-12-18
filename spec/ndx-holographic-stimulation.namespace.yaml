@@ -3,11 +3,18 @@ namespaces:
   - Alessandra Trapani
   contact:
   - alessandramaria.trapani@gmail.com
-  doc: My NWB extension
+  doc: An extension of for the optogenetic module to include the patterned photostimulation
   name: ndx-holographic-stimulation
   schema:
   - namespace: core
     neurodata_types:
-    - ElectricalSeries
+    - TimeSeries
+    - Device
+    - OptogeneticStimulusSite
+    - LabMetaData
+  - namespace: hdmf-common
+    neurodata_types:
+    - DynamicTableRegion
+    - DynamicTable
   - source: ndx-holographic-stimulation.extensions.yaml
   version: 0.1.0

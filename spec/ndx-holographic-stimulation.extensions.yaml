@@ -1,8 +1,133 @@
 groups:
-- neurodata_type_def: TetrodeSeries
-  neurodata_type_inc: ElectricalSeries
-  doc: An extension of ElectricalSeries to include the tetrode ID for each time series.
+- neurodata_type_def: OptogeneticStimulusPattern
+  neurodata_type_inc: LabMetaData
+  doc: Holographic excitation single ROI
   attributes:
-  - name: trode_id
-    dtype: int32
-    doc: The tetrode ID.
+  - name: description
+    dtype: text
+    doc: description of the stimulus pattern
+  - name: duration
+    dtype: float32
+    doc: the time duration for a single stimulus, in sec
+  - name: number_of_stimulus_presentation
+    dtype: int8
+    doc: number of times the patterned stimulus is presented in one stimulation interval
+  - name: inter_stimulus_interval
+    dtype: float32
+    doc: duration of the interval between each individual stimulus, in sec
+- neurodata_type_def: SpiralScanning
+  neurodata_type_inc: OptogeneticStimulusPattern
+  doc: table of parameters defining the spiral scanning beam pattern
+  attributes:
+  - name: diameter
+    dtype: float32
+    doc: spiral diameter of each spot, in m
+  - name: height
+    dtype: float32
+    doc: spiral height of each spot, in m
+  - name: number_of_revolutions
+    dtype: int8
+    doc: number of turns within a spiral
+- neurodata_type_def: TemporalFocusing
+  neurodata_type_inc: OptogeneticStimulusPattern
+  doc: table of parameters defining the temporal focusing beam-shaping
+  attributes:
+  - name: lateral_point_spread_function
+    dtype: text
+    doc: estimated lateral spatial profile or point spread function, expressed as
+      mean [um] ± s.d [um]
+  - name: axial_point_spread_function
+    dtype: text
+    doc: estimated axial spatial profile or point spread function, expressed as mean
+      [um]± s.d [um]
+- neurodata_type_def: PatternedOptogeneticStimulusSite
+  neurodata_type_inc: OptogeneticStimulusSite
+  doc: An extension of OptogeneticStimulusSite to include the geometrical representation
+    for the stimulus.
+  attributes:
+  - name: effector
+    dtype: text
+    doc: Light-activated effector protein expressed by the targeted cell (eg. ChR2)
+    required: false
+- neurodata_type_def: PatternedOptogeneticSeries
+  neurodata_type_inc: TimeSeries
+  doc: An extension of OptogeneticSeries to include the spatial patterns for the photostimulation.
+  attributes:
+  - name: unit
+    dtype: text
+    default_value: watts
+    doc: SI unit of data
+    required: false
+  datasets:
+  - name: data
+    dtype: numeric
+    dims:
+    - num_times
+    - num_rois
+    shape:
+    - null
+    - null
+    doc: The data values. The first dimension must be time. The second dimension represents
+      ROIs
+  - name: rois
+    neurodata_type_inc: DynamicTableRegion
+    dtype: int8
+    doc: references rows of ROI table
+  links:
+  - name: site
+    target_type: PatternedOptogeneticStimulusSite
+    doc: link to the patterned stimulus site
+  - name: stimulus_pattern
+    target_type: OptogeneticStimulusPattern
+    doc: link to the stimulus pattern
+    required: false
+  - name: device
+    target_type: Device
+    doc: link to the device used to generate the photostimulation
+  - name: spatial_light_modulator
+    target_type: SpatialLightModulator
+    doc: link to the spatial light modulator device
+    required: false
+  - name: light_source
+    target_type: LightSource
+    doc: link to the light source
+    required: false
+- neurodata_type_def: SpatialLightModulator
+  neurodata_type_inc: Device
+  doc: An extension of Device to include the Spatial Light Modulator metadata
+  attributes:
+  - name: model
+    dtype: text
+    doc: model of the Spatial Light Modulator, if known
+    required: false
+  - name: resolution
+    dtype: float32
+    doc: resolution of the Spatial Light Modulator in um, if known
+    required: false
+- neurodata_type_def: LightSource
+  neurodata_type_inc: Device
+  doc: An extension of Device to include the Light Sorce metadata
+  attributes:
+  - name: stimulation_wavelength
+    dtype: float32
+    doc: stimulation wavelength in nm
+  - name: filter_description
+    dtype: text
+    doc: filter_description
+    required: false
+  - name: peak_power
+    dtype: float32
+    doc: peak power of the stimulation in W, if known
+    required: false
+  - name: intensity
+    dtype: float32
+    doc: intensity of the excitation in W/m^2, if known.
+    required: false
+  - name: exposure_time
+    dtype: float32
+    doc: exposure time of the sample
+    required: false
+  - name: pulse_rate
+    dtype: float32
+    doc: pulse rate of the light source, if the light source is a pulsed laser
+    required: false
